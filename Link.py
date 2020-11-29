@@ -3,7 +3,7 @@ import re
 
 class Link:
     def __init__(self, alias = [], operation = "", links = [], decoratedName = ""):
-        self.alias = alias
+        self.alias = [alias]
         self.operation = operation
         self.links = links
         self.name = decoratedName
@@ -21,7 +21,7 @@ class Link:
         return text
 
     def getName(self):
-        return self.name if self.name else alias[0]
+        return self.name if self.name else self.alias[0]
 
     def toJSON(self):
         json = {"alias": self.alias, "operation": self.operation, "links": self.links}
@@ -89,32 +89,4 @@ class Link:
             self.operation = finalFormattedText
             print(lastSlotPos)
             self.links.insert(lastSlotPos, wordToMakeLink)
-                
-
-        
-##        wordsArray = re.split(r'(<[1-9]+>|\w+|[^a-zA-Z0-9_<>])', self.operation)
-##        contador = 0
-##        slotCounter = 1
-##        wasWordTurnedIntoLink = False
-##        positionForReplacement = 0
-##
-##        for word in wordsArray:
-##            if word != '':
-##                if word == ("<" + str(slotCounter) + ">") and not wasWordTurnedIntoLink:
-##                    slotCounter = slotCounter + 1
-##                elif word == ("<" + str(slotCounter) + ">") and wasWordTurnedIntoLink:
-##                    wordsArray[contador] = "<" + str(slotCounter+1) + ">"
-##                    slotCounter = slotCounter + 1
-##                elif word == wordToMakeLink and not wasWordTurnedIntoLink:
-##                    wasWordTurnedIntoLink = True
-##                    positionForReplacement = slotCounter
-##                    wordsArray[contador] = "<" + str(slotCounter) + ">"
-##                elif word == wordToMakeLink and wasWordTurnedIntoLink:
-##                    wordsArray[contador] = "<" + str(positionForReplacement) + ">"
-##            contador += 1
-##
-##        if wasWordTurnedIntoLink:
-##            self.links.insert(positionForReplacement-1, wordToMakeLink)
-##            self.operation = "".join(wordsArray)
-        
 

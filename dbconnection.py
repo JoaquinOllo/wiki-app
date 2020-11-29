@@ -35,10 +35,22 @@ def getLink(title):
     link.fromJSON(entity)
     return link
 
+def getLinkByLinks(link):
+    query = {"links": link}
+    entity = docsCollection.find_one(query)
+    link = Link()
+    link.fromJSON(entity)
+    return link
+
 def updateLink(title, modifiedLink):
     query = {"alias": title}
     link = modifiedLink.toJSON()
     entity = docsCollection.update_one(query, {"$set" : link})
+
+    for linkInside in link.links:
+        if not existsLink(linkInside):
+            newLink = Link(linkInside)
+            addLink(newLink)
 
 def existsLink(title):
     query = {"alias": title}
@@ -49,3 +61,4 @@ def existsLink(title):
 ##newLink = getLink(link.getName())
 ##print(newLink.getFullText())
 ##print (existsLink("holaa"))
+print (getLinkByLinks("pájaro").getName())

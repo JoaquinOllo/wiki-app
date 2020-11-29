@@ -68,18 +68,13 @@ def addLinkToEntry (title, wordToMakeLink):
     link = getLink(title)
     link.addLinkToOperation(wordToMakeLink)
     editLink(title, link)
-        
 
-def topDown (top, downTitles):
-    blank
-
-def followLink (entity, link):
-    blank
+def followLink (title, link):
+    topLink = getLink(title)
+    if link in topLink.links:
+        return getLink(link)
 
 def severeLink (entity, link):
-    blank
-
-def showEntry (entity):
     blank
 
 def seekByLink (link):
@@ -106,4 +101,4 @@ def registerLink (title, type, operation, entitiesLinked = []):
 ##registerSimpleEntry("La iglesia escarlata", "esta iglesia fue fundada en el año 1320, por Teodorico 1ro")
 ##addLinkToEntry("La iglesia escarlata", "iglesia")
 ##registerSimpleEntry("Ruiseñor escarlata", "Este curioso pájaro, plaga de los bosques arqueados, tiene un origen desconocido")
-addLinkToEntry("Ruiseñor escarlata", "pájaro")
+##addLinkToEntry("Ruiseñor escarlata", "pájaro")
