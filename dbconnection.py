@@ -35,6 +35,26 @@ def getLink(title):
     link.fromJSON(entity)
     return link
 
+def getLinksByField(field, value):
+    query = {field: value}
+    entities = docsCollection.find(query)
+    entitiesFormatted = []
+    for entity in entities:
+        link = Link()
+        link.fromJSON(entity)
+        print(link.getFullText())
+        entitiesFormatted.append(link)
+    return entitiesFormatted
+
+def getLinksByAlias(aliasSought):
+    blank
+
+def getLinksByOperation(operationSought):
+    blank
+
+def getLinksByLink(linkSought):
+    blank
+
 def getLinkByLinks(link):
     query = {"links": link}
     entity = docsCollection.find_one(query)
@@ -61,4 +81,5 @@ def existsLink(title):
 ##newLink = getLink(link.getName())
 ##print(newLink.getFullText())
 ##print (existsLink("holaa"))
-print (getLinkByLinks("pájaro").getName())
+##print (getLinkByLinks("pájaro").getName())
+##print (getLinksByField("alias", "hola"))

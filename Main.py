@@ -80,6 +80,15 @@ def severeLink (entity, link):
 def seekByLink (link):
     blank
 
+def seekManyByTitle (title):
+    return dbconnection.getLinksByField("alias", "hola")
+
+def seekManyByLink (linkText):
+    blank
+
+def seekManyByOperation (operationSought):
+    blank
+
 def seekByEntity (entity):
     blank
 
@@ -94,7 +103,7 @@ def registerLink (title, type, operation, entitiesLinked = []):
 
 ##editSimpleEntry("hola", "quien eras tuu")
 ##addAliasToLink("hola", "chau")
-##registerSimpleLink("articulo", "<paquita> vivió en la selva de <gurgeld> 13 años")
+##registerSimpleLink("hola", "<paquita> vivió en la selva de <gurgeld> 13 años")
 ##drawLinkBetween2("relacion", "<1> era enemigo de <2>", "hola", "articulo")
 ##groupLinks ("Guerra de maldor", "En ella lucharon <1>, <2>, y <3>", ["Gombarg", "Hazili", "Ferrush"])
 ##enumerateLinks("Muertos", "Murieron en la guerra", ["Gombarg", "Hazili", "Trubasc"])
@@ -102,3 +111,4 @@ def registerLink (title, type, operation, entitiesLinked = []):
 ##addLinkToEntry("La iglesia escarlata", "iglesia")
 ##registerSimpleEntry("Ruiseñor escarlata", "Este curioso pájaro, plaga de los bosques arqueados, tiene un origen desconocido")
 ##addLinkToEntry("Ruiseñor escarlata", "pájaro")
+print (seekManyByTitle("hola"))

@@ -14,9 +14,10 @@ class Link:
     def getFullText (self):
         text = self.operation
 
-        for contador in range(len(self.links)+1) :
-            text = text.replace ("<" + str(contador) + ">", self.links[contador])
-            contador += 1
+        if len(self.links) > 0:
+            for contador in range(len(self.links)+1) :
+                text = text.replace ("<" + str(contador) + ">", self.links[contador-1])
+                contador += 1
 
         return text
 
