@@ -81,24 +81,29 @@ def seekByLink (link):
     blank
 
 def seekManyByTitle (title):
-    return dbconnection.getLinksByField("alias", "hola")
+    return dbconnection.getLinksByField("alias", title)
 
 def seekManyByLink (linkText):
-    blank
+    return dbconnection.getLinksByField("links", linkText)
 
 def seekManyByOperation (operationSought):
+    return dbconnection.getLinksByField("operation", operationSought)
+
+def seekManyByAliasAndLink (link):
+    linksByAlias = dbconnection.getLinksByField("alias", link)
+    linksByLink = dbconnection.getLinksByField("links", link)
+    return linksByAlias + linksByLink
+
+def registerLink (title, operation, entitiesLinked = []):
+    newLink = Link(title, operation, entitiesLinked)
+
+def addDecoratedName(aliasSought, decoratedName):
     blank
 
-def seekByEntity (entity):
+def getLinkAndChildren(linkAlias):
     blank
 
-def idLinksInEntity (entity):
-    blank
-
-def idTermsOfLink (link):
-    blank
-
-def registerLink (title, type, operation, entitiesLinked = []):
+def registerLinkFromUnformattedText(title, text):
     blank
 
 ##editSimpleEntry("hola", "quien eras tuu")
@@ -111,4 +116,5 @@ def registerLink (title, type, operation, entitiesLinked = []):
 ##addLinkToEntry("La iglesia escarlata", "iglesia")
 ##registerSimpleEntry("Ruiseñor escarlata", "Este curioso pájaro, plaga de los bosques arqueados, tiene un origen desconocido")
 ##addLinkToEntry("Ruiseñor escarlata", "pájaro")
-print (seekManyByTitle("hola"))
+##print (seekManyByTitle("hola"))
+##print (seekManyByLink("paquita"))

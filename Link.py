@@ -48,46 +48,34 @@ class Link:
 
     def addLinkToOperation(self, wordToMakeLink):
         posOfWord = self.operation.find(wordToMakeLink)
-        print(posOfWord)
         contador = 0
 
         if posOfWord != -1:
             slotsBeforeMatch = re.findall(r'(<[1-9]+>)', self.operation[:posOfWord-1])
-            print(slotsBeforeMatch)
             lastSlotPos = len(slotsBeforeMatch)
-            print(lastSlotPos)
             wordReplacement = "<" + str(lastSlotPos+1) + ">"
-            print(wordReplacement)
             newText = self.operation.replace(wordToMakeLink, wordReplacement)
 
             slotsAfterMatch = re.findall(r'(<[1-9]+>)', self.operation[posOfWord+len(wordToMakeLink)+1:])
-            print (slotsAfterMatch)
             if (len(slotsAfterMatch)) > 0:
                 
                 wordsArray = re.split(r'(<[1-9]+>|\w+|[^a-zA-Z0-9_<>])', self.operation[posOfWord+len(wordToMakeLink):])
-                print (wordsArray)
 
                 slotCounter = lastSlotPos +1
                 for word in wordsArray:
-                    print(str(slotCounter) + " " + word)
                     if word != '':
                         if word == ("<" + str(slotCounter) + ">"):
                             slotCounter = slotCounter + 1
-                            print ("encontré coincidencia " + str(contador) )
                             wordsArray[contador] = "<" + str(slotCounter) + ">"
                     contador = contador +1
 
-                print(wordsArray)
                 finalFormattedText = newText[:posOfWord+3]
-                print (finalFormattedText)
                 formattedTextAfterLink = "".join(wordsArray)
-                print (formattedTextAfterLink)
                 finalFormattedText = finalFormattedText + formattedTextAfterLink
 
             else:
                 finalFormattedText = newText
                 
             self.operation = finalFormattedText
-            print(lastSlotPos)
             self.links.insert(lastSlotPos, wordToMakeLink)
 

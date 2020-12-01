@@ -10,7 +10,6 @@ docsCollection = mydb["docs"]
 def addLink(link):
     jsonLink = link.toJSON()
     query = {"alias": link.alias}
-    print(docsCollection.find_one(query))
     if not docsCollection.find_one(query):
         x = docsCollection.insert_one(jsonLink)
 
@@ -42,7 +41,6 @@ def getLinksByField(field, value):
     for entity in entities:
         link = Link()
         link.fromJSON(entity)
-        print(link.getFullText())
         entitiesFormatted.append(link)
     return entitiesFormatted
 

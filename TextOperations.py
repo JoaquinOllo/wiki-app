@@ -50,6 +50,8 @@ def generateOperation(operationBeginning, nOfSlots):
 
     return operation
 
+def getNumberOfLinksByOperation (operation):
+    blank
 
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
