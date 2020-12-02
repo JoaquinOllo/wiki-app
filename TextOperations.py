@@ -28,6 +28,17 @@ def extractLinks(text):
     
     return formattedText
 
+def extendEnumerationByX(operation, ammountOfNewSlots):
+    existingSlots = getNumberOfLinksByOperation(operation)
+
+    indexOfOpBeginning = operation.find("<1>")
+
+    operationBeginning = operation if indexOfOpBeginning == -1 else operation[:indexOfOpBeginning]
+
+    newSlots = existingSlots + ammountOfNewSlots
+
+    return generateOperation(operationBeginning, newSlots)
+
 def hasEnoughSlots(operation, nOfSlotsNeeded):
     hasEnoughSlots = True
 
@@ -61,3 +72,4 @@ def getNumberOfLinksByOperation (operation):
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
 ##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
+##print (extendEnumerationByX("Combatieron en la guerra: <1>, <2>", 2))

@@ -43,8 +43,10 @@ def editLinkAtPosition(title, linkPos, newLink):
     link.links[linkPos] = newLink
     editLink(title, link)
 
-def addTags (tags, title):
-    blank
+def registerTag (tag, text):
+    registerSimpleEntry(tag, text + ": ")
+
+def extendTag (tag, newLink):
 
 def drawLinkBetween2 (title, operation, source, destination):
 
