@@ -1,5 +1,6 @@
 import pymongo
 from Link import Link
+import re
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 
@@ -44,15 +45,6 @@ def getLinksByField(field, value):
         entitiesFormatted.append(link)
     return entitiesFormatted
 
-def getLinksByAlias(aliasSought):
-    blank
-
-def getLinksByOperation(operationSought):
-    blank
-
-def getLinksByLink(linkSought):
-    blank
-
 def getLinkByLinks(link):
     query = {"links": link}
     entity = docsCollection.find_one(query)
@@ -74,6 +66,18 @@ def existsLink(title):
     query = {"alias": title}
     return bool(docsCollection.find_one(query))
 
+def getLinksContainingWord(field, word):
+    regularExpression = "^.*" + word + ".*$"
+    regularExpression = re.compile(regularExpression, re.IGNORECASE)
+    query = { field: { "$regex": regularExpression } }
+    entities = docsCollection.find(query)
+    entitiesFormatted = []
+    for entity in entities:
+        link = Link()
+        link.fromJSON(entity)
+        entitiesFormatted.append(link)
+    return entitiesFormatted
+
 ##link = Link (["Grumbarg"], "<0> es <1> del ejército de <2>", ["general", "Rahash"], "Grumbarg el grande", 1)
 ##addLink(link)
 ##newLink = getLink(link.getName())
@@ -81,3 +85,5 @@ def existsLink(title):
 ##print (existsLink("holaa"))
 ##print (getLinkByLinks("pájaro").getName())
 ##print (getLinksByField("alias", "hola"))
+##for i in getLinksContainingWord("alias", "guerra"):
+##    print (i)
