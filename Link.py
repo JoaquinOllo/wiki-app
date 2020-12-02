@@ -14,12 +14,13 @@ class Link:
 
     def getFullText(self):
         text = self.operation
-
+        regex = "<[0-9]+>"
+        replacementFunction = lambda match: self.links[int(match[0][1:-1])-1]
+        
         if len(self.links) > 0:
-            for contador in range(len(self.links) + 1):
-                text = text.replace("<" + str(contador) + ">", self.links[contador - 1])
-                contador += 1
+            text = re.sub(regex, replacementFunction, text)
 
+        
         return text
 
     def getFormattedText(self):
@@ -31,11 +32,7 @@ class Link:
             formattedText = re.sub(regex, replacementFunction, text)
             return formattedText
         else:
-            return text
-
-    def replacementFunction(self, match):
-        print (match)
-        return "<a>"   
+            return text 
 
     def getName(self):
         return self.name if self.name else self.alias[0]
