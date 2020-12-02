@@ -87,3 +87,4 @@ def getLinksContainingWord(field, word):
 ##print (getLinksByField("alias", "hola"))
 ##for i in getLinksContainingWord("alias", "guerra"):
 ##    print (i)
+print (getLink("Ruiseñor escarlata").getFormattedText())

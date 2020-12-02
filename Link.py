@@ -23,7 +23,19 @@ class Link:
         return text
 
     def getFormattedText(self):
-        blank
+        text = self.operation
+        regex = "<[0-9]+>"
+        replacementFunction = lambda match: "<" + self.links[int(match[0][1:-1])-1] + ">"
+        
+        if len(self.links) > 0:
+            formattedText = re.sub(regex, replacementFunction, text)
+            return formattedText
+        else:
+            return text
+
+    def replacementFunction(self, match):
+        print (match)
+        return "<a>"   
 
     def getName(self):
         return self.name if self.name else self.alias[0]
