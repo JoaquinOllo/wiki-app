@@ -51,7 +51,13 @@ def generateOperation(operationBeginning, nOfSlots):
     return operation
 
 def getNumberOfLinksByOperation (operation):
-    blank
+    pattern = "(?<=<).+?(?=>)"
+    regexPattern = re.compile(pattern)
+
+    links = re.findall(regexPattern, operation)
+
+    return int(links[-1])
 
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
+##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
