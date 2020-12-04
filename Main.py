@@ -101,10 +101,22 @@ def registerLink (title, operation, entitiesLinked = []):
     newLink = Link(title, operation, entitiesLinked)
 
 def addDecoratedName(aliasSought, decoratedName):
-    blank
+    link = getLink(aliasSought)
+    link.name = decoratedName
+    editLink(aliasSought, link)
 
 def getLinkAndChildren(linkAlias):
-    blank
+    fatherLink = getLink(linkAlias)
+
+    fatherAndChildren = []
+
+    fatherAndChildren.append(fatherLink)
+    
+    for innerLink in fatherLink.links:
+        childLink = getLink(innerLink)
+        fatherAndChildren.append(childLink)
+
+    return fatherAndChildren
 
 def registerLinkFromFormattedText(title, text):
     newEntry = Link(title, text, [], "")
@@ -125,3 +137,5 @@ def registerLinkFromFormattedText(title, text):
 ##print (seekManyByLink("paquita"))
 ##registerLinkFromFormattedText("El castillo de Trento", "Construido por el <Duque Versillis>, posteriormente a la <Guerra de las Rosas>, sobre este castillo cayó una poderosa maldición por parte de <Tiresia>.")
 ##print (seekByLink("paquita"))
+##for link in getLinkAndChildren("articulo"):
+##    print(link)
