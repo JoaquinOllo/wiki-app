@@ -47,6 +47,7 @@ def registerTag (tag, text):
     registerSimpleEntry(tag, text + ": ")
 
 def extendTag (tag, newLink):
+    pass
 
 def drawLinkBetween2 (title, operation, source, destination):
 
@@ -105,8 +106,10 @@ def addDecoratedName(aliasSought, decoratedName):
 def getLinkAndChildren(linkAlias):
     blank
 
-def registerLinkFromUnformattedText(title, text):
-    blank
+def registerLinkFromFormattedText(title, text):
+    newEntry = Link(title, text, [], "")
+    newEntry.fromUnformattedText(text)
+    saveLink(newEntry)
 
 ##editSimpleEntry("hola", "quien eras tuu")
 ##addAliasToLink("hola", "chau")
@@ -120,3 +123,4 @@ def registerLinkFromUnformattedText(title, text):
 ##addLinkToEntry("Ruiseñor escarlata", "pájaro")
 ##print (seekManyByTitle("hola"))
 ##print (seekManyByLink("paquita"))
+##registerLinkFromFormattedText("El castillo de Trento", "Construido por el <Duque Versillis>, posteriormente a la <Guerra de las Rosas>, sobre este castillo cayó una poderosa maldición por parte de <Tiresia>.")
