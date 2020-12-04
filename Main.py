@@ -81,7 +81,7 @@ def severeLink (entity, link):
     blank
 
 def seekByLink (link):
-    blank
+    return dbconnection.getLinkByLinks(link)
 
 def seekManyByTitle (title):
     return dbconnection.getLinksByField("alias", title)
@@ -124,3 +124,4 @@ def registerLinkFromFormattedText(title, text):
 ##print (seekManyByTitle("hola"))
 ##print (seekManyByLink("paquita"))
 ##registerLinkFromFormattedText("El castillo de Trento", "Construido por el <Duque Versillis>, posteriormente a la <Guerra de las Rosas>, sobre este castillo cayó una poderosa maldición por parte de <Tiresia>.")
+##print (seekByLink("paquita"))

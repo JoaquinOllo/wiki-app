@@ -37,7 +37,9 @@ def getLink(title):
 
 def getLinkByField(field, value):
     query = {field: value}
+    print(query)
     entity = docsCollection.find_one(query)
+    print(entity)
     link = Link()
     link.fromJSON(entity)
     return link
@@ -53,11 +55,7 @@ def getLinksByField(field, value):
     return entitiesFormatted
 
 def getLinkByLinks(link):
-    query = {"links": link}
-    entity = docsCollection.find_one(query)
-    link = Link()
-    link.fromJSON(entity)
-    return link
+    return getLinkByField("links", link)
 
 def updateLink(title, modifiedLink):
     query = {"alias": title}

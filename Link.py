@@ -3,7 +3,7 @@ import re
 
 
 class Link:
-    def __init__(self, alias=[], operation="", links=[], decoratedName=""):
+    def __init__(self, alias="", operation="", links=[], decoratedName=""):
         self.alias = [alias]
         self.operation = operation
         self.links = links
@@ -44,15 +44,17 @@ class Link:
         return json
 
     def fromJSON(self, json):
-        self.alias = json["alias"]
-        self.operation = json["operation"]
-        self.links = json["links"]
 
-        try:
-            self.name = json["name"]
-            self.alias.append(json["name"])
-        except:
-            pass
+        if json != None:
+            self.alias = json["alias"]
+            self.operation = json["operation"]
+            self.links = json["links"]
+
+            try:
+                self.name = json["name"]
+                self.alias.append(json["name"])
+            except:
+                pass
 
     def fromUnformattedText(self, text):
         linkedText = TextOperations.extractLinks(text)
