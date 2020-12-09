@@ -61,9 +61,9 @@ def hasEnoughSlots(operation, nOfSlotsNeeded):
 
 def generateOperation(operationBeginning, nOfSlots):
     operation = (
-        operationBeginning + " "
+        operationBeginning
         if operationBeginning[-1] != " "
-        else operationBeginning
+        else operationBeginning[:-1]
     )
 
     for contador in range(nOfSlots):
@@ -89,3 +89,4 @@ def getNumberOfLinksByOperation(operation):
 ##print (generateOperation("Combatieron en la guerra", 3))
 ##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
 ##print (extendEnumerationByX("Combatieron en la guerra: <1>, <2>", 2))
+##print(extendEnumerationByX("Aquí murió <1>.", 2))

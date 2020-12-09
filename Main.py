@@ -111,6 +111,7 @@ def seekManyByAliasAndLink (link):
 
 def registerLink (title, operation, entitiesLinked = []):
     newLink = Link(title, operation, entitiesLinked)
+    ##completar
 
 def addDecoratedName(aliasSought, decoratedName):
     link = getLink(aliasSought)
@@ -151,4 +152,4 @@ def registerLinkFromFormattedText(title, text):
 ##print (seekByLink("paquita"))
 ##for link in getLinkAndChildren("articulo"):
 ##    print(link)
-extendTagByMany("Muertos", ["Theron"])
+##extendTagByMany("Muertos", ["Theron"])
