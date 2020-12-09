@@ -62,7 +62,7 @@ def updateLink(title, modifiedLink):
     link = modifiedLink.toJSON()
     entity = docsCollection.update_one(query, {"$set" : link})
 
-    for innerLink in link.links:
+    for innerLink in link["links"]:
         if not existsLink(innerLink):
             newLink = Link(innerLink)
             addLink(newLink)

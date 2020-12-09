@@ -47,7 +47,19 @@ def registerTag (tag, text):
     registerSimpleEntry(tag, text + ": ")
 
 def extendTag (tag, newLink):
-    pass
+    extendTagByMany (tag, [newLink])
+
+def extendTagByMany (tag, newLinks):
+    tagLink = getLink(tag)
+
+    amountOfNewSlots = len(newLinks)
+
+    newOperation = TextOperations.extendEnumerationByX(tagLink.operation, amountOfNewSlots)
+    tagLink.operation = newOperation
+
+    tagLink.links = tagLink.links + newLinks
+
+    editLink(tag, tagLink)
 
 def drawLinkBetween2 (title, operation, source, destination):
 
@@ -139,3 +151,4 @@ def registerLinkFromFormattedText(title, text):
 ##print (seekByLink("paquita"))
 ##for link in getLinkAndChildren("articulo"):
 ##    print(link)
+extendTagByMany("Muertos", ["Theron"])
