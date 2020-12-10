@@ -1,4 +1,4 @@
-import TextOperations
+from Engine import TextOperations
 import re
 
 

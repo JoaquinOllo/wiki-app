@@ -1,5 +1,5 @@
 import pymongo
-from Link import Link
+from Engine.Link import Link
 import re
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")

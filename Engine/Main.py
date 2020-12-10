@@ -1,6 +1,6 @@
-from Link import Link
-import dbconnection
-import TextOperations
+from Engine.Link import Link
+from Engine import dbconnection
+from Engine import TextOperations
 
 def registerSimpleEntry (title, text):
     newEntry = Link([title], text, [], "")
@@ -90,7 +90,7 @@ def followLink (title, link):
         return getLink(link)
 
 def severeLink (entity, link):
-    blank
+    pass
 
 def seekByLink (link):
     return dbconnection.getLinkByLinks(link)
