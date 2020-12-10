@@ -111,7 +111,7 @@ def seekManyByAliasAndLink (link):
 
 def registerLink (title, operation, entitiesLinked = []):
     newLink = Link(title, operation, entitiesLinked)
-    ##completar
+    saveLink (newLink)
 
 def addDecoratedName(aliasSought, decoratedName):
     link = getLink(aliasSought)
@@ -136,6 +136,9 @@ def registerLinkFromFormattedText(title, text):
     newEntry.fromUnformattedText(text)
     saveLink(newEntry)
 
+def getUndevelopedEntries():
+    return seekManyByOperation("")
+
 ##editSimpleEntry("hola", "quien eras tuu")
 ##addAliasToLink("hola", "chau")
 ##registerSimpleLink("hola", "<paquita> vivió en la selva de <gurgeld> 13 años")
@@ -153,3 +156,6 @@ def registerLinkFromFormattedText(title, text):
 ##for link in getLinkAndChildren("articulo"):
 ##    print(link)
 ##extendTagByMany("Muertos", ["Theron"])
+##registerLink("La catarata escarlata", "Siete guerreros perecieron tratando de cruzar esta famosa catarata y encontrar su afamado tesoro, el <1>.", ["Grial de San Bernardo"])
+##for entry in getUndevelopedEntries():
+##    print (entry)
