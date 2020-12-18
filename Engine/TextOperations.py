@@ -94,6 +94,18 @@ def getNumberOfLinksByOperation(operation):
 
     return int(links[-1])
 
+def offsetSlots(operation, existingSlots):
+    pattern = "(?<=<).+?(?=>)"
+    regexPattern = re.compile(pattern)
+
+    replacementFunction = lambda match: str(int(match[0])+existingSlots)
+
+    newOperation = re.sub(regexPattern, replacementFunction, operation)
+
+    return newOperation
+        
+
+
 
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
@@ -103,3 +115,4 @@ def getNumberOfLinksByOperation(operation):
 ##casa = extractLinks("<Amanda> vivió en el <Lago Brevis>, pero <Amanda> se sentía mal.")
 ##print (casa.text)
 ##print (casa.links)
+##print(offsetSlots("<1> fue el <2> de mi <3>", 3))
