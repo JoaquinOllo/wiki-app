@@ -16,14 +16,24 @@ def extractLinks(text):
     regexPattern = re.compile(pattern)
 
     links = re.findall(regexPattern, text)
+    links = list(dict.fromkeys(links))
     formattedText.links = links
 
     matchIterator = re.finditer(regexPattern, text)
 
+    linksDictionary = {}
+
     for match in matchIterator:
+        contadorAux = contador
+        try:
+            matchCode = linksDictionary[match[0]]
+            contadorAux = matchCode
+        except:
+            linksDictionary[match[0]] = contadorAux
+
         text = (
             text[: match.start() - correccion]
-            + str(contador)
+            + str(contadorAux)
             + text[match.end() - correccion :]
         )
         contador = contador + 1
@@ -90,3 +100,6 @@ def getNumberOfLinksByOperation(operation):
 ##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
 ##print (extendEnumerationByX("Combatieron en la guerra: <1>, <2>", 2))
 ##print(extendEnumerationByX("Aquí murió <1>.", 2))
+casa = extractLinks("<Amanda> vivió en el <Lago Brevis>, pero <Amanda> se sentía mal.")
+print (casa.text)
+print (casa.links)

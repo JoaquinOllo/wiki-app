@@ -139,6 +139,24 @@ def registerLinkFromFormattedText(title, text):
 def getUndevelopedEntries():
     return seekManyByOperation("")
 
+def getExpandedTextOfLink(title):
+    pass
+
+def mergeIdenticalLinks(title):
+    pass
+
+def collectMentionsForTag(tagTitle):
+    pass
+
+def registerAnotatedLink(title, text):
+    pass
+
+def unifyLinks(centerTitle, titlesToDelete):
+    pass
+
+def replace operationForLink(title, textToReplace, linkForSlot):
+    pass
+
 ##editSimpleEntry("hola", "quien eras tuu")
 ##addAliasToLink("hola", "chau")
 ##registerSimpleLink("hola", "<paquita> vivió en la selva de <gurgeld> 13 años")

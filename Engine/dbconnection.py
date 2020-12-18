@@ -6,7 +6,7 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 
 mydb = myclient["linktity"]
 
-docsCollection = mydb["docs"]
+docsCollection = mydb["ScumAndVillainy"]
 
 def addLink(link):
     jsonLink = link.toJSON()
