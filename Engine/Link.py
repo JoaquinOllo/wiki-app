@@ -4,7 +4,11 @@ import re
 
 class Link:
     def __init__(self, alias="", operation="", links=[], decoratedName=""):
-        self.alias = [alias]
+        self.alias = []
+        try:
+            self.alias = self.alias + alias
+        except TypeError as error:
+            self.alias = [alias]
         self.operation = operation
         self.links = links
         self.name = decoratedName
@@ -96,7 +100,7 @@ class Link:
                 finalFormattedText = finalFormattedText + formattedTextAfterLink
 
             else:
-                finalFormattedText = newText
+               finalFormattedText = newText
 
             self.operation = finalFormattedText
             self.links.insert(lastSlotPos, wordToMakeLink)
@@ -104,3 +108,14 @@ class Link:
     def __str__(self):
         map = {"a": self.alias, "b": self.operation, "c": self.links}
         return "Link, alias: {a}, operation: {b}, links: {c}".format(**map)
+
+    def __add__(self, secondLink):
+        matchingTitles = [x for x in self.links if x in secondLink.links]
+
+        if len(matchingTitles) == 0:
+            raise ArithmeticError("The links share no title and can't be added")
+        
+        title = list(dict.fromkeys(self.alias + secondLink.alias))
+
+        operation = self.operation + TextOperations.extendEnumerationByX(secondLink.operation, len(self.links))
+        ##EXPANDIR
