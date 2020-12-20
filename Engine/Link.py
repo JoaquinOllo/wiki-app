@@ -146,7 +146,9 @@ class Link:
 
         name = self.name
 
-        operation = self.operation + TextOperations.offsetSlots(secondLink.operation, len(self.links))
+        self.operation = self.operation if self.operation[-1] == "." else self.operation + "."
+
+        operation = self.operation + " " + TextOperations.offsetSlots(secondLink.operation, len(self.links))
 
         links = self.links + secondLink.links
 
