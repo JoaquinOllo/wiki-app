@@ -3,7 +3,7 @@ from Engine import dbconnection
 from Engine import TextOperations
 
 def registerSimpleEntry (title, text):
-    newEntry = Link([title], text, [], "")
+    newEntry = Link(title, text, [], "")
     saveLink(newEntry)
 
 def saveLink (link):
@@ -30,7 +30,7 @@ def addAliasToLink(title, newAlias):
     editLink(title, entry)
 
 def registerEmptyEntry(title):
-    newEntry = Link([title])
+    newEntry = Link(title)
     saveLink(newEntry)
 
 def registerSimpleLink(title, text):
@@ -139,9 +139,6 @@ def registerLinkFromFormattedText(title, text):
 def getUndevelopedEntries():
     return seekManyByOperation("")
 
-def getExpandedTextOfLink(title):
-    pass
-
 def mergeIdenticalLinks(title):
     pass
 
@@ -154,7 +151,7 @@ def registerAnotatedLink(title, text):
 def unifyLinks(centerTitle, titlesToDelete):
     pass
 
-def replace operationForLink(title, textToReplace, linkForSlot):
+def replaceOperationForLink(title, textToReplace, linkForSlot):
     pass
 
 ##editSimpleEntry("hola", "quien eras tuu")
@@ -177,3 +174,9 @@ def replace operationForLink(title, textToReplace, linkForSlot):
 ##registerLink("La catarata escarlata", "Siete guerreros perecieron tratando de cruzar esta famosa catarata y encontrar su afamado tesoro, el <1>.", ["Grial de San Bernardo"])
 ##for entry in getUndevelopedEntries():
 ##    print (entry)
+##print (getLink("Mijail").getFormattedText())
+##registerSimpleEntry("Mijail", "Mijail es cascarrabias")
+##getLink("Mijail") + getLink("AK")
+##getLink("Mijail") + getLink("PJ")
+##registerSimpleLink(["Mijail", "Sergei"], "En la guerra de la rebelión, Mijail fue prisionero de <Garruk>.")
+##getLink("Mijail") + getLink("Sergei")

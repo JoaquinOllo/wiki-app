@@ -1,7 +1,6 @@
 from Engine import TextOperations
 import re
 
-
 class Link:
     def __init__(self, alias="", operation="", links=[], decoratedName=""):
         self.alias = []
@@ -60,6 +59,34 @@ class Link:
             except:
                 pass
 
+    def normalize (self):
+        contador = 1
+        newLinks = []
+        slotsToNormalize = []
+        repeatedCounter = 0
+
+        for link in self.links:
+            
+            if link not in newLinks:
+                newLinks.append(link)
+            else:
+                repeatedCounter = self.links.index(link) + 1
+                slotsToNormalize.append((contador, repeatedCounter))
+            contador += 1
+
+        newOperation = self.operation
+
+        print (slotsToNormalize)
+
+        for slot in slotsToNormalize:
+            pattern = "(?<=<)" + str(slot[0]) + "(?=>)"
+            regexPattern = re.compile(pattern)
+            replacementFunction = lambda match: str(slot[1])
+            newOperation = re.sub(regexPattern, replacementFunction, newOperation)
+
+        self.operation = newOperation
+        self.links = newLinks
+
     def fromUnformattedText(self, text):
         linkedText = TextOperations.extractLinks(text)
         self.operation = linkedText.text
@@ -110,12 +137,24 @@ class Link:
         return "Link, alias: {a}, operation: {b}, links: {c}".format(**map)
 
     def __add__(self, secondLink):
-        matchingTitles = [x for x in self.links if x in secondLink.links]
+        matchingTitles = [x for x in self.alias if x in secondLink.alias]
 
         if len(matchingTitles) == 0:
             raise ArithmeticError("The links share no title and can't be added")
         
         title = list(dict.fromkeys(self.alias + secondLink.alias))
 
-        operation = self.operation + TextOperations.extendEnumerationByX(secondLink.operation, len(self.links))
-        ##EXPANDIR
+        name = self.name
+
+        operation = self.operation + TextOperations.offsetSlots(secondLink.operation, len(self.links))
+
+        links = self.links + secondLink.links
+
+        self.alias = title
+        self.name = name
+        self.operation = operation
+        self.links = links
+
+        self.normalize()
+
+        print(self)
