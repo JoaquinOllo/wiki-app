@@ -74,6 +74,16 @@ def updateLink(title, modifiedLink):
             newLink = Link(innerLink)
             addLink(newLink)
 
+def updateLinkById(id, modifiedLink):
+    query = {"_id": ObjectId(id)}
+    link = modifiedLink.toJSON()
+    entity = docsCollection.update_one(query, {"$set" : link})
+
+    for innerLink in link["links"]:
+        if not existsLink(innerLink):
+            newLink = Link(innerLink)
+            addLink(newLink)
+
 def existsLink(title):
     query = {"alias": title}
     return bool(docsCollection.find_one(query))
@@ -102,5 +112,9 @@ def getLinksContainingWord(field, word):
 ##print (getLink("Ruiseñor escarlata").getFormattedText())
 ##print (getLink("Ruiseñor escarlata").getFullText())
 ##print (getLinkByField("alias", "Muertos"))
-for link in getLinksByField("_id", "5fd2bcf54e318fc347906f78"):
-    print (link)
+##for link in getLinksByField("_id", "5fd2bcf54e318fc347906f78"):
+#    print (link)
+# link = getLink("Mijail")
+# print (link.id)
+# link.alias.append("Mikhail")
+# updateLinkById(link.id, link)
