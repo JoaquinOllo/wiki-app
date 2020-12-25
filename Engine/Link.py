@@ -81,7 +81,7 @@ class Link:
 
         newOperation = self.operation
 
-        print (slotsToNormalize)
+        #print (slotsToNormalize)
 
         for slot in slotsToNormalize:
             pattern = "(?<=<)" + str(slot[0]) + "(?=>)"
@@ -157,11 +157,8 @@ class Link:
 
         links = self.links + secondLink.links
 
-        self.alias = title
-        self.name = name
-        self.operation = operation
-        self.links = links
+        newLink = Link(title, operation, links, name)
 
-        self.normalize()
+        newLink.normalize()
 
-        print(self)
+        return newLink

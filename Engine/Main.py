@@ -20,6 +20,11 @@ def deleteLinkByField(field, value):
     if link:
         dbconnection.deleteLinkById(link.id)
 
+def deleteManyByField(field, value):
+    links = dbconnection.getLinksByField(field, value)
+    for link in links:
+        dbconnection.deleteLinkById(link.id)
+
 def editSimpleEntry (title, newText):
     entry = dbconnection.getLink(title)
     entry.operation = newText
@@ -145,7 +150,22 @@ def getUndevelopedEntries():
     return seekManyByOperation("")
 
 def mergeIdenticalLinks(title):
-    pass
+    mainLink = getLink(title)
+    contador = 0
+    id = mainLink.id
+    links = seekManyByTitle(title)
+    linksIdToDelete = []
+
+    for link in links:
+        #print (link)
+        if contador > 0:
+            mainLink = mainLink + link
+            linksIdToDelete.append(link.id)
+        contador += 1
+
+    print (mainLink)
+    for id in linksIdToDelete:
+        deleteLinkByField("_id", id)
 
 def collectMentionsForTag(tagTitle):
     pass
@@ -187,3 +207,5 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 ##getLink("Mijail") + getLink("Sergei")
 #registerSimpleLink("hola", "hola")
 #deleteLinkByField("alias", "hola")
+#mergeIdenticalLinks("Mijail")
+#print(getLink("Mijail") + getLink("Sergei"))
