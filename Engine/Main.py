@@ -179,4 +179,4 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 ##getLink("Mijail") + getLink("AK")
 ##getLink("Mijail") + getLink("PJ")
 ##registerSimpleLink(["Mijail", "Sergei"], "En la guerra de la rebelión, Mijail fue prisionero de <Garruk>.")
-getLink("Mijail") + getLink("Sergei")
+##getLink("Mijail") + getLink("Sergei")

@@ -1,4 +1,5 @@
 import pymongo
+from bson.objectid import ObjectId
 from Engine.Link import Link
 import re
 
@@ -36,16 +37,22 @@ def getLink(title):
     return link
 
 def getLinkByField(field, value):
-    query = {field: value}
-    print(query)
+    if field == "_id":
+        query = {field: ObjectId(value)}
+    else:
+        query = {field: value}
+    ##print(query)
     entity = docsCollection.find_one(query)
-    print(entity)
+    ##print(entity)
     link = Link()
     link.fromJSON(entity)
     return link
 
 def getLinksByField(field, value):
-    query = {field: value}
+    if field == "_id":
+        query = {field: ObjectId(value)}
+    else:
+        query = {field: value}
     entities = docsCollection.find(query)
     entitiesFormatted = []
     for entity in entities:
@@ -95,3 +102,5 @@ def getLinksContainingWord(field, word):
 ##print (getLink("Ruiseñor escarlata").getFormattedText())
 ##print (getLink("Ruiseñor escarlata").getFullText())
 ##print (getLinkByField("alias", "Muertos"))
+for link in getLinksByField("_id", "5fd2bcf54e318fc347906f78"):
+    print (link)
