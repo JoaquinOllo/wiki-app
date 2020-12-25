@@ -54,6 +54,11 @@ class Link:
             self.links = json["links"]
 
             try:
+                self.id = json["_id"]
+            except:
+                pass
+
+            try:
                 self.name = json["name"]
                 self.alias.append(json["name"])
             except:
