@@ -15,6 +15,11 @@ def existsLink(title):
 def editLink (title, newLink):
     dbconnection.updateLink(title, newLink)
 
+def deleteLinkByField(field, value):
+    link = dbconnection.getLinkByField(field, value)
+    if link:
+        dbconnection.deleteLinkById(link.id)
+
 def editSimpleEntry (title, newText):
     entry = dbconnection.getLink(title)
     entry.operation = newText
@@ -180,3 +185,5 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 ##getLink("Mijail") + getLink("PJ")
 ##registerSimpleLink(["Mijail", "Sergei"], "En la guerra de la rebelión, Mijail fue prisionero de <Garruk>.")
 ##getLink("Mijail") + getLink("Sergei")
+#registerSimpleLink("hola", "hola")
+#deleteLinkByField("alias", "hola")

@@ -100,6 +100,10 @@ def getLinksContainingWord(field, word):
         entitiesFormatted.append(link)
     return entitiesFormatted
 
+def deleteLinkById(id):
+    query = {"_id": ObjectId(id)}
+    docsCollection.delete_one(query)
+
 ##link = Link (["Grumbarg"], "<0> es <1> del ejército de <2>", ["general", "Rahash"], "Grumbarg el grande", 1)
 ##addLink(link)
 ##newLink = getLink(link.getName())
