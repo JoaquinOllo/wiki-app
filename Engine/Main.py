@@ -15,6 +15,9 @@ def existsLink(title):
 def editLink (title, newLink):
     dbconnection.updateLink(title, newLink)
 
+def editLinkByByID (id, newLink):
+    dbconnection.updateLinkById(id, newLink)    
+
 def deleteLinkByField(field, value):
     link = dbconnection.getLinkByField(field, value)
     if link:
@@ -168,7 +171,25 @@ def mergeIdenticalLinks(title):
         deleteLinkByField("_id", id)
 
 def collectMentionsForTag(tagTitle):
-    pass
+    mentions = seekManyByLink(tagTitle)
+    link = getLink(tagTitle)
+    mentionsToAdd = []
+    for mention in mentions:
+        alreadyInLink = False
+        for alias in mention.alias:
+            if alias in link.links:
+                alreadyInLink = True
+                break
+        if alreadyInLink == False:
+            mentionsToAdd.append(mention.getName())
+
+    if mentionsToAdd:
+        newOperation = TextOperations.extendEnumerationByX(link.operation, len(mentionsToAdd))
+        newLinks = link.links + mentionsToAdd
+        link.operation = newOperation
+        link.links = newLinks
+
+        editLinkByByID(link.id, link)
 
 def registerAnotatedLink(title, text):
     pass
@@ -209,3 +230,5 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 #deleteLinkByField("alias", "hola")
 #mergeIdenticalLinks("Mijail")
 #print(getLink("Mijail") + getLink("Sergei"))
+collectMentionsForTag("PJ")
+print(getLink("PJ"))
