@@ -192,12 +192,21 @@ def collectMentionsForTag(tagTitle):
         editLinkByByID(link.id, link)
 
 def registerAnotatedLink(title, text):
-    pass
+    anotatedText = TextOperations.AnotatedText(text)
+    reducedText = anotatedText.getReducedText()
+    sublinks = anotatedText.sublinks
+    for sublink in sublinks:
+        registerLink(sublink.title, sublink.text, sublink.links)
+
+    registerLinkFromFormattedText(title, reducedText)
 
 def unifyLinks(centerTitle, titlesToDelete):
     pass
 
 def replaceOperationForLink(title, textToReplace, linkForSlot):
+    pass
+
+def collectIndirectReferences(tagTitle):
     pass
 
 ##editSimpleEntry("hola", "quien eras tuu")
@@ -232,3 +241,4 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 #print(getLink("Mijail") + getLink("Sergei"))
 #collectMentionsForTag("PJ")
 #print(getLink("PJ"))
+#registerAnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
