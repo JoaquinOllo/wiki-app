@@ -7,6 +7,10 @@ class LinkedText:
         self.text = text
         self.links = links
 
+    def __str__(self):
+        map = {"a": self.title, "b": self.text, "c": self.links}
+        return "Texto linkeado, título: {a} texto: {b}, links: {c}".format(**map)  
+
 class AnotatedText:
     def __init__(self, text):
         self.text = text
@@ -32,6 +36,13 @@ class AnotatedText:
             linkedText.title = title
 
             self.sublinks.append(linkedText)
+
+    def __str__(self):
+        sublinks = ""
+        for i in self.sublinks:
+            sublinks = sublinks + i.__str__() + ". "
+        map = {"b": self.text, "c": sublinks}
+        return "Texto formateado con links, texto: {b}, links: {c}".format(**map)        
 
     def getReducedText(self):
         
@@ -152,14 +163,13 @@ def turnFragIntoSentence(text):
     mainLinkPattern = re.compile(mainLinkRegex)
 
     textWOMainLink = re.sub(mainLinkPattern, "", text)
-    print(textWOMainLink)
 
     punctuationMarksRegex = "^[ ,.:;\-!?]*"
     punctuationMarksPattern = re.compile(punctuationMarksRegex)
 
     textStartNormalized = re.sub(punctuationMarksPattern, "", textWOMainLink)
 
-    punctuationMarksEndRegex = "[ ,.:;\-!?]*$"
+    punctuationMarksEndRegex = "[ ,.:;\-!?]$"
     punctuationMarksEndPattern = re.compile(punctuationMarksEndRegex)
 
     textEndNormalized = re.sub(punctuationMarksEndPattern, ".", textStartNormalized)
