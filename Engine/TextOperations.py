@@ -39,7 +39,7 @@ class AnotatedText:
         fragmentRegex = r'\[.*?<<(.+?)>>.*?\]'
         regexFragmPattern = re.compile (fragmentRegex)
 
-        replacementFunction = lambda match : "<" + match[1] + ">"
+        replacementFunction = lambda match : "<" + match[1] + ">."
 
         newText = re.sub(regexFragmPattern, replacementFunction, self.text)
 
@@ -192,6 +192,6 @@ def capitalize(text):
 ##print (casa.text)
 ##print (casa.links)
 ##print(offsetSlots("<1> fue el <2> de mi <3>", 3))
-#casa = AnotatedText("Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>]. Cenaron juntos en [el arcón gris].")
+#casa = AnotatedText("Se encontró con [<<Aurigas>> (<teniente general> del <quinto ejército>)] Cenaron juntos en [el arcón gris].")
 #print (casa.getReducedText())
 #print (turnFragIntoSentence(", <teniente general> del <quinto ejército>"))

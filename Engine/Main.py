@@ -230,5 +230,5 @@ def replaceOperationForLink(title, textToReplace, linkForSlot):
 #deleteLinkByField("alias", "hola")
 #mergeIdenticalLinks("Mijail")
 #print(getLink("Mijail") + getLink("Sergei"))
-collectMentionsForTag("PJ")
-print(getLink("PJ"))
+#collectMentionsForTag("PJ")
+#print(getLink("PJ"))
