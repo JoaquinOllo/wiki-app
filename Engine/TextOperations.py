@@ -70,11 +70,14 @@ def hasEnoughSlots(operation, nOfSlotsNeeded):
 
 
 def generateOperation(operationBeginning, nOfSlots):
-    operation = (
-        operationBeginning
-        if operationBeginning[-1] != " "
-        else operationBeginning[:-1]
-    )
+    if operationBeginning:
+        operation = (
+            operationBeginning
+            if operationBeginning[-1] != " "
+            else operationBeginning[:-1]
+        )
+    else:
+        operation = ""
 
     for contador in range(nOfSlots):
         if contador != 0:
@@ -92,7 +95,7 @@ def getNumberOfLinksByOperation(operation):
 
     links = re.findall(regexPattern, operation)
 
-    return int(links[-1])
+    return int(links[-1]) if links else 0
 
 def offsetSlots(operation, existingSlots):
     pattern = "(?<=<).+?(?=>)"
