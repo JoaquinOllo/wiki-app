@@ -213,7 +213,6 @@ def registerAnotatedLink(title, text):
 
 def unifyLinks(centerTitle, titlesToDelete):
     mainLink = getLink(centerTitle)
-    contador = 0
     id = mainLink.id
     links = []
     for titleToDelete in titlesToDelete:
@@ -288,4 +287,4 @@ def turnIndirectReferencesIntoTag(tagTitle):
 #registerAnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
 #registerEmptyEntry("PJs")
 #unifyLinks("PJ", ["PJs"])
-#turnIndirectReferencesIntoTag("amigo")
+turnIndirectReferencesIntoTag("trasfondo")
