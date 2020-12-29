@@ -58,40 +58,59 @@ class AnotatedText:
             
 
 def extractLinks(text):
-    formattedText = LinkedText("")
+    formattedText = LinkedText(text)
     contador = 1
-    correccion = 0
 
-    pattern = "(?<=<).+?(?=>)"
+    pattern = "(?<=<)(.+?)(?=>)"
     regexPattern = re.compile(pattern)
 
     links = re.findall(regexPattern, text)
     links = list(dict.fromkeys(links))
     formattedText.links = links
 
-    matchIterator = re.finditer(regexPattern, text)
-
-    linksDictionary = {}
-
-    for match in matchIterator:
-        contadorAux = contador
-        try:
-            matchCode = linksDictionary[match[0]]
-            contadorAux = matchCode
-        except:
-            linksDictionary[match[0]] = contadorAux
-
-        text = (
-            text[: match.start() - correccion]
-            + str(contadorAux)
-            + text[match.end() - correccion :]
-        )
-        contador = contador + 1
-        correccion = correccion + match.end() - match.start() - 1
-
-    formattedText.text = text
-
+    for match in links:
+        matchPattern = "(?<=<)("+ match +")(?=>)"
+        matchRegex = re.compile(matchPattern)
+        formattedText.text = re.sub(matchRegex, str(contador), formattedText.text)
+        contador += 1
+        
     return formattedText
+
+    # formattedText = LinkedText("")
+    # contador = 1
+    # correccion = 0
+
+    # pattern = "(?<=<).+?(?=>)"
+    # regexPattern = re.compile(pattern)
+
+    # links = re.findall(regexPattern, text)
+    # links = list(dict.fromkeys(links))
+    # formattedText.links = links
+
+    # matchIterator = re.finditer(regexPattern, text)
+
+    # linksDictionary = {}
+
+    # for match in matchIterator:
+    #     contadorAux = contador
+    #     try:
+    #         matchCode = linksDictionary[match[0]]
+    #         contadorAux = matchCode
+    #     except:
+    #         linksDictionary[match[0]] = contadorAux
+
+    #     text = (
+    #         text[: match.start() - correccion]
+    #         + str(contadorAux)
+    #         + text[match.end() - correccion :]
+    #     )
+    #     contador = contador + 1
+    #     caracteresCorreccion = len(str(contadorAux))
+    #     correccion = correccion + match.end() - match.start() - caracteresCorreccion
+
+    # formattedText.text = text
+
+    # return formattedText
 
 
 def extendEnumerationByX(operation, ammountOfNewSlots):
@@ -198,9 +217,9 @@ def capitalize(text):
 ##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
 ##print (extendEnumerationByX("Combatieron en la guerra: <1>, <2>", 2))
 ##print(extendEnumerationByX("Aquí murió <1>.", 2))
-##casa = extractLinks("<Amanda> vivió en el <Lago Brevis>, pero <Amanda> se sentía mal.")
-##print (casa.text)
-##print (casa.links)
+#casa = extractLinks("<Amanda> vivió en el <Lago Brevis>, pero <Amanda> se sentía mal. Esto fue hasta que conoció a <Brevis>, <a> <b> <c> <b> <a> <d>")
+#print (casa.text)
+#print (casa.links)
 ##print(offsetSlots("<1> fue el <2> de mi <3>", 3))
 #casa = AnotatedText("Se encontró con [<<Aurigas>> (<teniente general> del <quinto ejército>)] Cenaron juntos en [el arcón gris].")
 #print (casa.getReducedText())

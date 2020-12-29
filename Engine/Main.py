@@ -15,7 +15,7 @@ def existsLink(title):
 def editLink (title, newLink):
     dbconnection.updateLink(title, newLink)
 
-def editLinkByByID (id, newLink):
+def editLinkByID (id, newLink):
     dbconnection.updateLinkById(id, newLink)    
 
 def deleteLinkByField(field, value):
@@ -36,6 +36,10 @@ def editSimpleEntry (title, newText):
 def getLink (title):
     entry = dbconnection.getLink(title)
     return entry
+
+def getLinkByID (id):
+    entry = dbconnection.getLinkByField("_id", id)
+    return entry    
 
 def addAliasToLink(title, newAlias):
     entry = getLink(title)
@@ -95,7 +99,14 @@ def enumerateLinks (title, operationBeginning, titles):
 def addLinkToEntry (title, wordToMakeLink):
     link = getLink(title)
     link.addLinkToOperation(wordToMakeLink)
-    editLink(title, link)
+    id = link.id
+    editLinkByID(id, link)
+
+def addLinkToEntryByID (id, wordToMakeLink):
+    link = getLinkByID(id)
+    link.addLinkToOperation(wordToMakeLink)
+    id = link.id
+    editLinkByID(id, link)
 
 def followLink (title, link):
     topLink = getLink(title)
@@ -165,7 +176,7 @@ def mergeIdenticalLinks(title):
             mainLink = mainLink + link
             linksIdToDelete.append(link.id)
         contador += 1
-    editLinkByByID(id, mainLink)
+    editLinkByID(id, mainLink)
 
     for id in linksIdToDelete:
         deleteLinkByField("_id", id)
@@ -189,7 +200,7 @@ def collectMentionsForTag(tagTitle):
         link.operation = newOperation
         link.links = newLinks
 
-        editLinkByByID(link.id, link)
+        editLinkByID(link.id, link)
 
 def registerAnotatedLink(title, text):
     anotatedText = TextOperations.AnotatedText(text)
@@ -216,7 +227,7 @@ def unifyLinks(centerTitle, titlesToDelete):
         mainLink = mainLink + link
         linksIdToDelete.append(link.id)
 
-    editLinkByByID(id, mainLink)
+    editLinkByID(id, mainLink)
 
     for id in linksIdToDelete:
         deleteLinkByField("_id", id)
@@ -224,8 +235,23 @@ def unifyLinks(centerTitle, titlesToDelete):
 def replaceOperationForLink(title, textToReplace, linkForSlot):
     pass
 
-def collectIndirectReferences(tagTitle):
-    pass
+def getIndirectReferences(tagTitle):
+    indirectMentions = dbconnection.getLinksContainingWord("operation", tagTitle)
+    return indirectMentions
+
+def turnIndirectReferencesIntoTag(tagTitle):
+    indirectMentions = getIndirectReferences(tagTitle)
+    tagReferences = []
+
+    for mention in indirectMentions:
+        
+        addLinkToEntryByID(mention.id, tagTitle)
+        tagReferences.append(mention.getName())
+
+    registerTag(tagTitle, "")
+    extendTagByMany(tagTitle, tagReferences)
+
+
 
 ##editSimpleEntry("hola", "quien eras tuu")
 ##addAliasToLink("hola", "chau")
@@ -262,3 +288,4 @@ def collectIndirectReferences(tagTitle):
 #registerAnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
 #registerEmptyEntry("PJs")
 #unifyLinks("PJ", ["PJs"])
+#turnIndirectReferencesIntoTag("amigo")
