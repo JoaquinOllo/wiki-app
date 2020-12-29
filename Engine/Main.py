@@ -165,8 +165,8 @@ def mergeIdenticalLinks(title):
             mainLink = mainLink + link
             linksIdToDelete.append(link.id)
         contador += 1
+    editLinkByByID(id, mainLink)
 
-    print (mainLink)
     for id in linksIdToDelete:
         deleteLinkByField("_id", id)
 
@@ -201,7 +201,25 @@ def registerAnotatedLink(title, text):
     registerLinkFromFormattedText(title, reducedText)
 
 def unifyLinks(centerTitle, titlesToDelete):
-    pass
+    mainLink = getLink(centerTitle)
+    contador = 0
+    id = mainLink.id
+    links = []
+    for titleToDelete in titlesToDelete:
+        link = getLink(titleToDelete)
+        if link:
+            links.append(link)
+    linksIdToDelete = []
+
+    for link in links:
+        link.alias.append(mainLink.getName())
+        mainLink = mainLink + link
+        linksIdToDelete.append(link.id)
+
+    editLinkByByID(id, mainLink)
+
+    for id in linksIdToDelete:
+        deleteLinkByField("_id", id)
 
 def replaceOperationForLink(title, textToReplace, linkForSlot):
     pass
@@ -242,3 +260,5 @@ def collectIndirectReferences(tagTitle):
 #collectMentionsForTag("PJ")
 #print(getLink("PJ"))
 #registerAnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
+#registerEmptyEntry("PJs")
+#unifyLinks("PJ", ["PJs"])
