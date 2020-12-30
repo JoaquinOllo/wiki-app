@@ -81,8 +81,6 @@ class Link:
 
         newOperation = self.operation
 
-        #print (slotsToNormalize)
-
         for slot in slotsToNormalize:
             pattern = "(?<=<)" + str(slot[0]) + "(?=>)"
             regexPattern = re.compile(pattern)
@@ -109,45 +107,6 @@ class Link:
         newFormattedText = re.sub(wordSoughtRegex, replFunction, formattedText)
 
         self.fromUnformattedText(newFormattedText)
-
-        # posOfWord = self.operation.find(wordToMakeLink)
-        # contador = 0
-
-        # if posOfWord != -1:
-        #     slotsBeforeMatch = re.findall(
-        #         r"(<[1-9]+>)", self.operation[: posOfWord - 1]
-        #     )
-        #     lastSlotPos = len(slotsBeforeMatch)
-        #     wordReplacement = "<" + str(lastSlotPos + 1) + ">"
-        #     newText = self.operation.replace(wordToMakeLink, wordReplacement)
-
-        #     slotsAfterMatch = re.findall(
-        #         r"(<[1-9]+>)", self.operation[posOfWord + len(wordToMakeLink) + 1 :]
-        #     )
-        #     if (len(slotsAfterMatch)) > 0:
-
-        #         wordsArray = re.split(
-        #             r"(<[1-9]+>|\w+|[^a-zA-Z0-9_<>])",
-        #             self.operation[posOfWord + len(wordToMakeLink) :],
-        #         )
-
-        #         slotCounter = lastSlotPos + 1
-        #         for word in wordsArray:
-        #             if word != "":
-        #                 if word == ("<" + str(slotCounter) + ">"):
-        #                     slotCounter = slotCounter + 1
-        #                     wordsArray[contador] = "<" + str(slotCounter) + ">"
-        #             contador = contador + 1
-
-        #         finalFormattedText = newText[: posOfWord + 3]
-        #         formattedTextAfterLink = "".join(wordsArray)
-        #         finalFormattedText = finalFormattedText + formattedTextAfterLink
-
-        #     else:
-        #        finalFormattedText = newText
-
-        #     self.operation = finalFormattedText
-        #     self.links.insert(lastSlotPos, wordToMakeLink)
 
     def __str__(self):
         map = {"a": self.alias, "b": self.operation, "c": self.links}

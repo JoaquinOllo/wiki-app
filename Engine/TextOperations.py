@@ -76,43 +76,6 @@ def extractLinks(text):
         
     return formattedText
 
-    # formattedText = LinkedText("")
-    # contador = 1
-    # correccion = 0
-
-    # pattern = "(?<=<).+?(?=>)"
-    # regexPattern = re.compile(pattern)
-
-    # links = re.findall(regexPattern, text)
-    # links = list(dict.fromkeys(links))
-    # formattedText.links = links
-
-    # matchIterator = re.finditer(regexPattern, text)
-
-    # linksDictionary = {}
-
-    # for match in matchIterator:
-    #     contadorAux = contador
-    #     try:
-    #         matchCode = linksDictionary[match[0]]
-    #         contadorAux = matchCode
-    #     except:
-    #         linksDictionary[match[0]] = contadorAux
-
-    #     text = (
-    #         text[: match.start() - correccion]
-    #         + str(contadorAux)
-    #         + text[match.end() - correccion :]
-    #     )
-    #     contador = contador + 1
-    #     caracteresCorreccion = len(str(contadorAux))
-    #     correccion = correccion + match.end() - match.start() - caracteresCorreccion
-
-    # formattedText.text = text
-
-    # return formattedText
-
-
 def extendEnumerationByX(operation, ammountOfNewSlots):
     existingSlots = getNumberOfLinksByOperation(operation)
 
