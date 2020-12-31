@@ -4,8 +4,8 @@ from Constants import ResponseCodes
 from Engine import Main
 app = Flask(__name__)
 
-#Instructions to run server, on windows cmd
-#cd "C:\Users\joaquin.ollo\OneDrive - Accenture\Documentos\Proyectos Personales\GMWiki\Server"
+#Instructions to run flask server, on windows cmd
+#cd ".\GMWiki\Server"
 #set FLASK_APP=mainServer.py
 #python -m flask run
 

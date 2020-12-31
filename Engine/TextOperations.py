@@ -173,6 +173,12 @@ def capitalize(text):
 
     return newText
 
+def undoSlot(text, wordToUnslot):
+    unslotRegex = "<%s>" % wordToUnslot
+    unslotPattern = re.compile (unslotRegex)
+
+    newText = re.sub(unslotPattern, wordToUnslot, text)
+    return newText
 
 
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
@@ -187,3 +193,4 @@ def capitalize(text):
 #casa = AnotatedText("Se encontró con [<<Aurigas>> (<teniente general> del <quinto ejército>)] Cenaron juntos en [el arcón gris].")
 #print (casa.getReducedText())
 #print (turnFragIntoSentence(", <teniente general> del <quinto ejército>"))
+#print (undoSlot("<teniente general> del <quinto ejército>", "teniente general"))
