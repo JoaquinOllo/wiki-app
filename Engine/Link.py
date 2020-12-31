@@ -108,6 +108,12 @@ class Link:
 
         self.fromUnformattedText(newFormattedText)
 
+    def removeLink (self, wordToRemove):
+        unformattedText = self.getFormattedText()
+        newUnformattedText = TextOperations.undoSlot(unformattedText, wordToRemove)
+        
+        self.fromUnformattedText(newUnformattedText)
+
     def __str__(self):
         map = {"a": self.alias, "b": self.operation, "c": self.links}
         return "Link, alias: {a}, operation: {b}, links: {c}".format(**map)

@@ -253,6 +253,11 @@ def turnIndirectReferencesIntoTag(tagTitle):
     registerTag(tagTitle, "")
     extendTagByMany(tagTitle, tagReferences)
 
+def removeLinkFromEntity(id, wordToRemove):
+    link = getLinkByID(id)
+    link.removeLink(wordToRemove)
+    print (link)
+
 
 
 ##editSimpleEntry("hola", "quien eras tuu")
@@ -291,3 +296,4 @@ def turnIndirectReferencesIntoTag(tagTitle):
 #registerEmptyEntry("PJs")
 #unifyLinks("PJ", ["PJs"])
 #turnIndirectReferencesIntoTag("trasfondo")
+#removeLinkFromEntity(getLink("PJ").id, "Nova")
