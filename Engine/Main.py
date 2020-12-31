@@ -119,6 +119,9 @@ def severeLink (entity, link):
 def seekByLink (link):
     return dbconnection.getLinkByLinks(link)
 
+def getManyByField(value, field):
+    return dbconnection.getLinksByField(field, value)
+
 def seekManyByTitle (title):
     return dbconnection.getLinksByField("alias", title)
 

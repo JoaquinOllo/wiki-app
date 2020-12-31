@@ -1,0 +1,4 @@
+
+SUCCESS = 1
+ERROR = 0
+NOTEXECUTED = -1
