@@ -23,6 +23,11 @@ def deleteLinkByField(field, value):
     if link:
         dbconnection.deleteLinkById(link.id)
 
+    for alias in link.alias:
+        mentions = seekManyByLink(alias)
+        for mention in mentions:
+            removeLinkFromEntity(mention.id, alias)
+
 def deleteManyByField(field, value):
     links = dbconnection.getLinksByField(field, value)
     for link in links:
@@ -256,7 +261,7 @@ def turnIndirectReferencesIntoTag(tagTitle):
 def removeLinkFromEntity(id, wordToRemove):
     link = getLinkByID(id)
     link.removeLink(wordToRemove)
-    print (link)
+    editLinkByID(id, link)
 
 
 
@@ -297,3 +302,4 @@ def removeLinkFromEntity(id, wordToRemove):
 #unifyLinks("PJ", ["PJs"])
 #turnIndirectReferencesIntoTag("trasfondo")
 #removeLinkFromEntity(getLink("PJ").id, "Nova")
+#deleteLinkByField("alias", "Mikhail")
