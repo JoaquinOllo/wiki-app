@@ -19,7 +19,7 @@ responseDefault = {
 
 @app.route('/links/<field>/<value>', methods=['GET', 'DELETE', 'PATCH'])
 def links(field, value):
-    response = responseDefault
+    response = responseDefault.copy()
     if request.method == "GET":
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
@@ -31,8 +31,10 @@ def links(field, value):
         response["operationSuccess"] = ResponseCodes.SUCCESS
         return response
     elif request.method == "PATCH":
-        #update 1 link
-        pass
+        jsonData = request.get_json()
+        Main.editLinkPartially(value, jsonData)
+        response["operationSuccess"] = ResponseCodes.SUCCESS
+        return response
 
 @app.route('/hello')
 def hello():
