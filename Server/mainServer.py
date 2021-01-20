@@ -1,4 +1,5 @@
 from flask import Flask
+import copy
 from flask import request
 from Constants import ResponseCodes
 from Engine import Main
@@ -14,15 +15,22 @@ app = Flask(__name__)
 responseDefault = {
     "operationSuccess": ResponseCodes.ERROR,
     "links": [],
-    "description": "Operation not executed"
+    "description": "Operation not executed",
+    "requestMetadata": {
+        "method": "",
+        "params": []
+    }
 }
 
 @app.route('/links/<field>/<value>', methods=['GET', 'DELETE', 'PATCH'])
 def links(field, value):
-    response = responseDefault.copy()
+    response = copy.deepcopy(responseDefault)
     if request.method == "GET":
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
+        response["requestMetadata"]["method"] = request.method
+        response["requestMetadata"]["params"].append ({"value": value})
+        response["requestMetadata"]["params"].append ({"field": field})
         for link in Main.getManyByField(value, field):
             response['links'].append(link.toJSON())
         return response
