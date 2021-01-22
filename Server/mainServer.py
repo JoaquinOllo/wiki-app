@@ -33,7 +33,7 @@ def links(field, value):
         response["requestMetadata"]["params"].append ({"field": field})
         for link in Main.getManyByField(value, field):
             response['links'].append(link.toJSON())
-        return response
+        return (response, [("Access-Control-Allow-Origin", "*")])
     elif request.method == "DELETE":
         Main.deleteLinkByField(field, value)
         response["operationSuccess"] = ResponseCodes.SUCCESS
