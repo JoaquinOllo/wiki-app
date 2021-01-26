@@ -1,5 +1,5 @@
 import pymongo
-import dbsettings
+from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
 import re
