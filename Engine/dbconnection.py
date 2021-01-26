@@ -1,9 +1,13 @@
 import pymongo
+import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
 import re
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+#myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority".format_map(dbsettings.userMap)
+myclient = pymongo.MongoClient(connnectionString)
+
 
 mydb = myclient["linktity"]
 
