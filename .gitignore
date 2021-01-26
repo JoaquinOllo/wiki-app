@@ -1,4 +1,4 @@
-./Constants/dbsettings.py
+Constants/dbsettings.py
 
 # Byte-compiled / optimized / DLL files
 ../__pycache__/
