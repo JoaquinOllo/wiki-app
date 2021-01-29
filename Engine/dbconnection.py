@@ -1,11 +1,19 @@
 import pymongo
-from Constants import dbsettings
+#from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
 import re
 
+USERNAME = "readandwrite"
+PASSWORD = "5uORJJ9eootiprml"
+
+userMap = {
+    "username" : USERNAME,
+    "password" : PASSWORD
+}
+
 #myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority".format_map(dbsettings.userMap)
+connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority".format_map(userMap)
 myclient = pymongo.MongoClient(connnectionString)
 
 
