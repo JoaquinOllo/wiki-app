@@ -301,7 +301,7 @@ def removeLinkFromEntity(id, wordToRemove):
 ##for link in getLinkAndChildren("articulo"):
 ##    print(link)
 ##extendTagByMany("Muertos", ["Theron"])
-##registerLink("La catarata escarlata", "Siete guerreros perecieron tratando de cruzar esta famosa catarata y encontrar su afamado tesoro, el <1>.", ["Grial de San Bernardo"])
+#registerLink("La catarata escarlata", "Siete guerreros perecieron tratando de cruzar esta famosa catarata y encontrar su afamado tesoro, el <1>.", ["Grial de San Bernardo"])
 ##for entry in getUndevelopedEntries():
 ##    print (entry)
 ##print (getLink("Mijail").getFormattedText())
@@ -322,3 +322,5 @@ def removeLinkFromEntity(id, wordToRemove):
 #turnIndirectReferencesIntoTag("trasfondo")
 #removeLinkFromEntity(getLink("PJ").id, "Nova")
 #deleteLinkByField("alias", "Mikhail")
+#for link in getManyByField("PJ", "alias"):
+#    print (link)

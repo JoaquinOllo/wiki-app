@@ -1,9 +1,20 @@
 from flask import Flask
+from Server import config
 import copy
 from flask import request
 from Constants import ResponseCodes
 from Engine import Main
-app = Flask(__name__)
+
+def create_app(enviroment):
+    app = Flask(__name__)
+    app.config.from_object(enviroment)
+    return app
+
+enviroment = config.config['development']
+
+
+app = create_app(enviroment)
+
 
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
 #Instructions to run flask server, on windows cmd
@@ -31,6 +42,7 @@ def links(field, value):
         response["requestMetadata"]["method"] = request.method
         response["requestMetadata"]["params"].append ({"value": value})
         response["requestMetadata"]["params"].append ({"field": field})
+        app.logger.info(Main.getManyByField)
         for link in Main.getManyByField(value, field):
             response['links'].append(link.toJSON())
         return (response, [("Access-Control-Allow-Origin", "*")])
