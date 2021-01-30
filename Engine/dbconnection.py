@@ -1,16 +1,20 @@
 import pymongo
+import os
 #from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
+from boto.s3.connection import S3Connection
 import re
 
-USERNAME = "readandwrite"
-PASSWORD = "5uORJJ9eootiprml"
+USERNAME = os.environ['USERNAME']
+PASSWORD = os.environ['PASSWORD']
 
 userMap = {
     "username" : USERNAME,
     "password" : PASSWORD
 }
+
+#s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 
 #myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority".format_map(userMap)
