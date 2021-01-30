@@ -3,7 +3,7 @@ import os
 #from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
-from boto.s3.connection import S3Connection
+#from boto.s3.connection import S3Connection
 import re
 
 USERNAME = os.environ['USERNAME']
