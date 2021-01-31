@@ -72,6 +72,7 @@ def getLinksByField(field, value):
     entitiesFormatted = []
     for entity in entities:
         current_app.logger.info(entity)
+        current_app.logger.info("prueba")
         link = Link()
         link.fromJSON(entity)
         entitiesFormatted.append(link)

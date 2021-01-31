@@ -1,7 +1,7 @@
 from flask import Flask
 from Server import config
 import copy
-from flask import request
+from flask import request, current_app
 from Constants import ResponseCodes
 from Engine import Main
 
@@ -36,6 +36,7 @@ responseDefault = {
 def links(field, value):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
+        current_app.logger.info("call to GET links")
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
         #response["requestMetadata"]["method"] = request.method
@@ -56,6 +57,7 @@ def links(field, value):
 
 @app.route('/hello')
 def hello():
+    current_app.logger.info("call to hello")
     return 'Hello, World'
 
 if __name__ == '__main__':
