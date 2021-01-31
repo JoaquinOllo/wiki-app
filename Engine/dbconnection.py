@@ -4,6 +4,7 @@ import os
 from bson.objectid import ObjectId
 from Engine.Link import Link
 import re
+from flask import abort, render_template, current_app
 
 USERNAME = os.environ['USERNAME']
 PASSWORD = os.environ['PASSWORD']
@@ -70,6 +71,7 @@ def getLinksByField(field, value):
     entities = docsCollection.find(query)
     entitiesFormatted = []
     for entity in entities:
+        current_app.logger.info(entity)
         link = Link()
         link.fromJSON(entity)
         entitiesFormatted.append(link)
