@@ -26,11 +26,10 @@ app = create_app(enviroment)
 responseDefault = {
     "operationSuccess": ResponseCodes.ERROR,
     "links": [],
-    "description": "Operation not executed",
-    "requestMetadata": {
-        "method": "",
-        "params": []
-    }
+#    "requestMetadata": {
+#        "method": "",
+#        "params": []
+#    }
 }
 
 @app.route('/links/<field>/<value>', methods=['GET', 'DELETE', 'PATCH'])
@@ -39,10 +38,10 @@ def links(field, value):
     if request.method == "GET":
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
-        response["requestMetadata"]["method"] = request.method
-        response["requestMetadata"]["params"].append ({"value": value})
-        response["requestMetadata"]["params"].append ({"field": field})
-        app.logger.info(Main.getManyByField)
+        response["description"] = ResponseCodes.OPEXEC
+        #response["requestMetadata"]["method"] = request.method
+        #response["requestMetadata"]["params"].append ({"value": value})
+        #response["requestMetadata"]["params"].append ({"field": field})
         for link in Main.getManyByField(value, field):
             response['links'].append(link.toJSON())
         return (response, [("Access-Control-Allow-Origin", "*")])
@@ -59,3 +58,7 @@ def links(field, value):
 @app.route('/hello')
 def hello():
     return 'Hello, World'
+
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    app.run(threaded=True, port=5000)
