@@ -38,7 +38,6 @@ def links(field, value):
     if request.method == "GET":
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
-        response["description"] = ResponseCodes.OPEXEC
         #response["requestMetadata"]["method"] = request.method
         #response["requestMetadata"]["params"].append ({"value": value})
         #response["requestMetadata"]["params"].append ({"field": field})
