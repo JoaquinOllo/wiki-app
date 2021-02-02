@@ -1,5 +1,7 @@
 from Engine import TextOperations
 import re
+from flask import Flask
+app = Flask(__name__)
 
 class Link:
     def __init__(self, alias="", operation="", links=[], decoratedName=""):
@@ -48,6 +50,8 @@ class Link:
 
     def fromJSON(self, json):
 
+        app.logger.info(json)
+
         if json != None:
             self.alias = json["alias"]
             self.operation = json["operation"]
@@ -56,6 +60,7 @@ class Link:
             try:
                 self.id = json["_id"]
             except:
+                self.id = "se entró a la excepción"
                 pass
 
             try:
