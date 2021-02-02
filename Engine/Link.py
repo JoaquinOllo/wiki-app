@@ -1,4 +1,5 @@
 from Engine import TextOperations
+from bson.objectid import ObjectId
 import re
 from flask import Flask
 app = Flask(__name__)
@@ -54,7 +55,7 @@ class Link:
             self.alias = json["alias"]
             self.operation = json["operation"]
             self.links = json["links"]
-            self.id = json["_id"]
+            self.id = json["_id"].str
 
             try:
                 self.name = json["name"]
