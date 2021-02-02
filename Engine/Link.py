@@ -55,7 +55,7 @@ class Link:
             self.alias = json["alias"]
             self.operation = json["operation"]
             self.links = json["links"]
-            self.id = json["_id"].str
+            self.id = ObjectId(json["_id"]).str
 
             try:
                 self.name = json["name"]
