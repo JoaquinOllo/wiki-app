@@ -50,17 +50,11 @@ class Link:
 
     def fromJSON(self, json):
 
-        app.logger.info("en fromJSON")
-
         if json != None:
             self.alias = json["alias"]
             self.operation = json["operation"]
             self.links = json["links"]
-
-            try:
-                self.id = json["_id"]
-            except:
-                self.id = "se entró a la excepción"
+            self.id = json["_id"]
 
             try:
                 self.name = json["name"]
