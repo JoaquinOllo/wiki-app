@@ -114,7 +114,8 @@ def getLinksContainingWord(field, word):
     for entity in entities:
         link = Link()
         link.fromJSON(entity)
-        entitiesFormatted.append(link)
+        #entitiesFormatted.append(link)
+        entitiesFormatted.append(entity)
     return entitiesFormatted
 
 def deleteLinkById(id):
