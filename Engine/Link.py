@@ -47,6 +47,9 @@ class Link:
         json = {"alias": self.alias, "operation": self.operation, "links": self.links}
         if self.name:
             json["name"] = self.name
+
+        if self.id:
+            json["_id"] = str(self.id)
         return json
 
     def fromJSON(self, json):
@@ -55,7 +58,7 @@ class Link:
             self.alias = json["alias"]
             self.operation = json["operation"]
             self.links = json["links"]
-            self.id = ObjectId(json["_id"]).str
+            self.id = json["_id"]
 
             try:
                 self.name = json["name"]
