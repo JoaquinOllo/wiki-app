@@ -6,9 +6,20 @@ from Engine.Link import Link
 import re
 from flask import abort, render_template, current_app
 
-USERNAME = os.environ['USERNAME']
-PASSWORD = os.environ['PASSWORD']
-connnectionString = os.environ['connnectionString']
+try:
+    USERNAME = os.environ['USERNAME']
+    PASSWORD = os.environ['PASSWORD']
+    connnectionString = os.environ['connnectionString']
+except:
+    import Constants
+    USERNAME = Constants.dbsettings.USERNAME
+    PASSWORD = Constants.dbsettings.PASSWORD
+    connnectionString = Constants.dbsettings.connnectionString
+
+USERNAME = "readandwrite"
+PASSWORD = "5uORJJ9eootiprml"
+connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority"
+
 
 userMap = {
     "username" : USERNAME,
