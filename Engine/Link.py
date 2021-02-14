@@ -45,11 +45,17 @@ class Link:
 
     def toJSON(self):
         json = {"alias": self.alias, "operation": self.operation, "links": self.links}
-        if self.name:
-            json["name"] = self.name
+        try:
+            if self.name:
+                json["name"] = self.name
+        except:
+            pass
 
-        if self.id:
-            json["_id"] = str(self.id)
+        try:
+            if self.id:
+                json["_id"] = str(self.id)
+        except:
+            pass
         return json
 
     def fromJSON(self, json):
@@ -58,7 +64,11 @@ class Link:
             self.alias = json["alias"]
             self.operation = json["operation"]
             self.links = json["links"]
-            self.id = json["_id"]
+            
+            try:
+                self.id = json["_id"]
+            except:
+                pass
 
             try:
                 self.name = json["name"]
