@@ -144,7 +144,10 @@ def seekByLink (link):
     return dbconnection.getLinkByLinks(link)
 
 def getManyByField(value, field):
-    return dbconnection.getLinksContainingWord(field, value)
+    if field == "id" or field == "_id":
+        return dbconnection.getLinksByField("_id", value)
+    else:
+        return dbconnection.getLinksContainingWord(field, value)
 
 def seekManyByTitle (title):
     return dbconnection.getLinksByField("alias", title)
@@ -322,5 +325,5 @@ def removeLinkFromEntity(id, wordToRemove):
 #turnIndirectReferencesIntoTag("trasfondo")
 #removeLinkFromEntity(getLink("PJ").id, "Nova")
 #deleteLinkByField("alias", "Mikhail")
-#for link in getManyByField("PJ", "alias"):
+#for link in getManyByField("id", "600f8f9d6eb52f5b61dc5f49"):
 #    print (link)
