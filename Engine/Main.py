@@ -46,8 +46,7 @@ def deleteLinkByField(field, value):
     if link:
         dbconnection.deleteLinkById(link.id)
         deletedLinks.append(link.toJSON())
-        current_app.logger.info(link)
-        current_app.logger.info(link.toJSON())
+        #current_app.logger.info(link)
 
         for alias in link.alias:
             mentions = seekManyByLink(alias)
