@@ -19,11 +19,8 @@ def editLinkPartially (title, newLink):
     editionLink = getLink(title)
     formattedNewLink = Link()
     formattedNewLink.fromJSON(newLink)
-    print (formattedNewLink)
 
     if formattedNewLink.alias:
-        print (editionLink.alias)
-        print (formattedNewLink.alias)
         editionLink.alias = formattedNewLink.alias
     
     if formattedNewLink.operation:
@@ -35,7 +32,12 @@ def editLinkPartially (title, newLink):
     editLinkByID(editionLink.id, editionLink)
 
 def editLinkByID (id, newLink):
-    dbconnection.updateLinkById(id, newLink)    
+    if (isinstance(newLink, Link)):
+        dbconnection.updateLinkById(id, newLink)
+    else:
+        link = Link()
+        link.fromJSON(newLink)
+        dbconnection.updateLinkById(id, link)
 
 def deleteLinkByField(field, value):
     link = dbconnection.getLinkByField(field, value)
@@ -59,7 +61,10 @@ def editSimpleEntry (title, newText):
 
 def getLink (title):
     entry = dbconnection.getLinksContainingWord("alias", title)
-    return entry[0]
+    if entry:
+        return entry[0]
+    else:
+        return False
 
 def getLinkByID (id):
     entry = dbconnection.getLinkByField("_id", id)
