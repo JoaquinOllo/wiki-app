@@ -54,7 +54,8 @@ def link(id):
         response['links'].append(link.toJSON())
         return (response, [("Access-Control-Allow-Origin", "*")])
     elif request.method == "DELETE":
-        Main.deleteLinkByField("_id", id)
+        deletedLinks = Main.deleteLinkByField("_id", id)
+        response['links'] = deletedLinks
         response["operationSuccess"] = ResponseCodes.SUCCESS
         return response
     elif request.method == "PATCH":

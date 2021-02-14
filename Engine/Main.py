@@ -1,6 +1,7 @@
 from Engine.Link import Link
 from Engine import dbconnection
 from Engine import TextOperations
+from flask import abort, render_template, current_app
 
 def registerSimpleEntry (title, text):
     newEntry = Link(title, text, [], "")
@@ -40,14 +41,21 @@ def editLinkByID (id, newLink):
         dbconnection.updateLinkById(id, link)
 
 def deleteLinkByField(field, value):
+    deletedLinks = []
     link = dbconnection.getLinkByField(field, value)
     if link:
         dbconnection.deleteLinkById(link.id)
+        deletedLinks.append(link.toJSON())
+        current_app.logger.info(link)
+        current_app.logger.info(link.toJSON())
 
-    for alias in link.alias:
-        mentions = seekManyByLink(alias)
-        for mention in mentions:
-            removeLinkFromEntity(mention.id, alias)
+        for alias in link.alias:
+            mentions = seekManyByLink(alias)
+            for mention in mentions:
+                removeLinkFromEntity(mention.id, alias)
+                deletedLinks.append(mention.toJSON())
+
+    return deletedLinks
 
 def deleteManyByField(field, value):
     links = dbconnection.getLinksByField(field, value)

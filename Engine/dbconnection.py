@@ -67,9 +67,13 @@ def getLinkByField(field, value):
     else:
         query = {field: value}
     entity = docsCollection.find_one(query)
-    link = Link()
-    link.fromJSON(entity)
-    return link
+    if entity:
+        link = Link()
+        link.fromJSON(entity)
+        return link
+    else:
+        return False
+
 
 def getLinksByField(field, value):
     if field == "_id":
