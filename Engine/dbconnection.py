@@ -11,10 +11,10 @@ try:
     PASSWORD = os.environ['PASSWORD']
     connnectionString = os.environ['connnectionString']
 except:
-    import Constants
-    USERNAME = Constants.dbsettings.USERNAME
-    PASSWORD = Constants.dbsettings.PASSWORD
-    connnectionString = Constants.dbsettings.connnectionString
+    from Constants import dbsettings
+    USERNAME = dbsettings.USERNAME
+    PASSWORD = dbsettings.PASSWORD
+    connnectionString = dbsettings.connnectionString
 
 USERNAME = "readandwrite"
 PASSWORD = "5uORJJ9eootiprml"
@@ -49,7 +49,6 @@ def addLink(link):
 def addOrUpdateLink(link):
     jsonLink = link.toJSON()
     query = {"alias": link.alias}
-    print(docsCollection.find_one(query))
     if not docsCollection.find_one(query):
         x = docsCollection.insert_one(jsonLink)
     else:
@@ -67,9 +66,7 @@ def getLinkByField(field, value):
         query = {field: ObjectId(value)}
     else:
         query = {field: value}
-    ##print(query)
     entity = docsCollection.find_one(query)
-    ##print(entity)
     link = Link()
     link.fromJSON(entity)
     return link
@@ -82,8 +79,7 @@ def getLinksByField(field, value):
     entities = docsCollection.find(query)
     entitiesFormatted = []
     for entity in entities:
-        current_app.logger.info(entity)
-        current_app.logger.info("prueba")
+        #current_app.logger.info("prueba")
         link = Link()
         link.fromJSON(entity)
         entitiesFormatted.append(link)
