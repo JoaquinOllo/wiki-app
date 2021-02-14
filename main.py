@@ -4,6 +4,7 @@ import copy
 from flask import request, current_app
 from Constants import ResponseCodes
 from Engine import Main
+import sys
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -32,27 +33,36 @@ responseDefault = {
 #    }
 }
 
-@app.route('/links/<field>/<value>', methods=['GET', 'DELETE', 'PATCH'])
+@app.route('/links/<field>/<value>', methods=['GET'])
 def links(field, value):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
         current_app.logger.info("call to GET links")
         #seek many links
         response["operationSuccess"] = ResponseCodes.SUCCESS
-        #response["requestMetadata"]["method"] = request.method
-        #response["requestMetadata"]["params"].append ({"value": value})
-        #response["requestMetadata"]["params"].append ({"field": field})
         for link in Main.getManyByField(value, field):
             response['links'].append(link.toJSON())
         return (response, [("Access-Control-Allow-Origin", "*")])
+
+@app.route('/link/<id>', methods=['GET', 'DELETE', 'PATCH'])
+def link(id):
+    response = copy.deepcopy(responseDefault)
+    if request.method == "GET":
+        #seek a link
+        response["operationSuccess"] = ResponseCodes.SUCCESS
+        link = Main.getLinkByID(id)
+        response['links'].append(link.toJSON())
+        return (response, [("Access-Control-Allow-Origin", "*")])
     elif request.method == "DELETE":
-        Main.deleteLinkByField(field, value)
+        Main.deleteLinkByField("_id", id)
         response["operationSuccess"] = ResponseCodes.SUCCESS
         return response
     elif request.method == "PATCH":
         jsonData = request.get_json()
-        Main.editLinkPartially(value, jsonData)
+        Main.editLinkByID(id, jsonData)
         response["operationSuccess"] = ResponseCodes.SUCCESS
+        link = Main.getLinkByID(id)
+        response['links'].append(link.toJSON())
         return response
 
 @app.route('/hello')
