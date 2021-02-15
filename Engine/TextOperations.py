@@ -181,6 +181,21 @@ def undoSlot(text, wordToUnslot):
     return newText
 
 
+def validateJSON(jsonInput: object) -> bool:
+    """Validates whether a json passed as argument is valid as a possible link. The only required attribute is 'name', everything else is optional.
+    Parameters
+    ----------
+    name : jsonInput
+        A json provided as input
+    """
+    isValid = False
+    if jsonInput != None:
+        try:
+            isValid = True if jsonInput["name"] else False
+        except:
+            pass
+    return isValid
+
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
 ##print (getNumberOfLinksByOperation("<1> y <2> lucharon con <3>"))
@@ -194,3 +209,5 @@ def undoSlot(text, wordToUnslot):
 #print (casa.getReducedText())
 #print (turnFragIntoSentence(", <teniente general> del <quinto ejército>"))
 #print (undoSlot("<teniente general> del <quinto ejército>", "teniente general"))
+#print (validateJSON({"name": "hola"}))
+#print (validateJSON({"chateau": "hola"}))
