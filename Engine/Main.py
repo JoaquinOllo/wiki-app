@@ -297,6 +297,7 @@ def removeLinkFromEntity(id, wordToRemove):
     link.removeLink(wordToRemove)
     editLinkByID(id, link)
 
+#TODO: develop a function to seek a link that contains a particular slot.
 
 
 ##editSimpleEntry("hola", "quien eras tuu")
