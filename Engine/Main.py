@@ -1,6 +1,7 @@
 from Engine.Link import Link
 from Engine import dbconnection
 from Engine import TextOperations
+from Engine.TextOperations import propertyExists
 from flask import abort, render_template, current_app
 
 def registerSimpleEntry (title, text):
@@ -8,7 +9,7 @@ def registerSimpleEntry (title, text):
     saveLink(newEntry)
 
 def saveLink (link):
-    dbconnection.addLink(link)
+    return dbconnection.addLink(link)
 
 def existsLink(title):
     return dbconnection.existsLink(title)
@@ -86,10 +87,29 @@ def registerEmptyEntry(title):
     newEntry = Link(title)
     saveLink(newEntry)
 
-def registerSimpleLink(title, text):
-    link = Link(title)
-    link.fromUnformattedText(text)
-    saveLink(link)
+def registerSimpleLink(jsonInput):
+    """
+    Creates and saves a new link to the database, using a json as input. Validates that the json has the required format. The created link will either have just an alias (an empty link), or be complete (alias, plus operation and links). The function returns the created link.
+
+    Parameters
+    ----------
+    name : jsonInput
+        A json provided as input, which will be validated against the TextOperations.validateJSON function (an "alias" property is the only requirement).
+
+    Raises
+    ------
+    TypeError
+        If jsonInput parameter doesn't pass the validation, an error is raised.
+    """    
+    if (TextOperations.validateJSON(jsonInput)):
+        linkAlias = jsonInput["alias"]
+        link = Link(linkAlias)
+        if propertyExists(jsonInput, "text"):
+            link.fromUnformattedText(jsonInput["text"])
+        createdLinks = saveLink(link)
+        return createdLinks
+    else:
+        raise TypeError("Inadequate json input format. JSON input must have a name attribute, at least.")
 
 def editLinkAtPosition(title, linkPos, newLink):
     link = getLink(title)
