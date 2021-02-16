@@ -20,17 +20,13 @@ app = create_app(enviroment)
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
 #Instructions to run flask server, on windows cmd
 #cd ".\GMWiki\Server"
-#set FLASK_APP=mainServer.py
+#set FLASK_APP=main.py
 #set FLASK_ENV=development
 #python -m flask run
 
 responseDefault = {
     "operationSuccess": ResponseCodes.ERROR,
-    "links": [],
-#    "requestMetadata": {
-#        "method": "",
-#        "params": []
-#    }
+    "links": []
 }
 
 @app.route('/links/<field>/<value>', methods=['GET'])
@@ -57,14 +53,29 @@ def link(id):
         deletedLinks = Main.deleteLinkByField("_id", id)
         response['links'] = deletedLinks
         response["operationSuccess"] = ResponseCodes.SUCCESS
-        return response
+        return (response, [("Access-Control-Allow-Origin", "*")])
     elif request.method == "PATCH":
         jsonData = request.get_json()
         Main.editLinkByID(id, jsonData)
         response["operationSuccess"] = ResponseCodes.SUCCESS
         link = Main.getLinkByID(id)
         response['links'].append(link.toJSON())
-        return response
+        return (response, [("Access-Control-Allow-Origin", "*")])
+
+@app.route('/link', methods=['PUT'])
+def newLink():
+    response = copy.deepcopy(responseDefault)
+    if request.method == "PUT":
+        jsonData = request.get_json()
+        try:
+            createdLinks = Main.registerSimpleLink(jsonData)
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            response["links"] = createdLinks
+        except TypeError:
+            response["description"] = ResponseCodes.FORMATINPUTERROR
+        except:
+            response["description"] = ResponseCodes.UNKNOWNERROR
+        return (response, [("Access-Control-Allow-Origin", "*")])
 
 @app.route('/hello')
 def hello():
