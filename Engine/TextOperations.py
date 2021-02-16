@@ -296,11 +296,40 @@ def validateJSON(jsonInput: object) -> bool:
     isValid = False
     if jsonInput != None:
         try:
-            isValid = True if jsonInput["name"] else False
+            isValid = True if jsonInput["alias"] else False
         except:
             pass
     return isValid
 
+def propertyExists(jsonInput: object, property: str) -> bool:
+    """Validates whether a given property in a json exists, or not.
+    Parameters
+    ----------
+    name : jsonInput
+        A json provided as input
+    name : property
+        A property sought in the json provided
+    """
+    exists = False
+    try:
+        exists = True if jsonInput[property] else False
+    except:
+        pass
+    return exists
+
+def jsonify(jsonInput: object) -> object:
+    """Returns a json with _id property, if it exists, casted as string.
+    Parameters
+    ----------
+    name : jsonInput
+        A json provided as input
+    """
+    try:
+        jsonInput["_id"] = str(jsonInput["_id"])
+    except:
+        pass
+
+    return jsonInput
 
 ##print (hasEnoughSlots("mi casa queda en <1> y <2>" ,3))
 ##print (generateOperation("Combatieron en la guerra", 3))
@@ -317,3 +346,4 @@ def validateJSON(jsonInput: object) -> bool:
 #print (undoSlot("<teniente general> del <quinto ejército>", "teniente general"))
 #print (validateJSON({"name": "hola"}))
 #print (validateJSON({"chateau": "hola"}))
+#print (propertyExists({"house": 1}, "housse"))
