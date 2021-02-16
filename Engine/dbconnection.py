@@ -3,6 +3,7 @@ import os
 #from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
+from Engine.TextOperations import jsonify
 import re
 from flask import abort, render_template, current_app
 
@@ -37,14 +38,18 @@ docsCollection = mydb["ScumAndVillainy"]
 
 def addLink(link):
     jsonLink = link.toJSON()
+    createdLinks = []
     query = {"alias": link.alias}
     if not docsCollection.find_one(query):
         x = docsCollection.insert_one(jsonLink)
+        createdLinks.append(jsonify(jsonLink))
 
     for linkInside in link.links:
         if not existsLink(linkInside):
             newLink = Link(linkInside)
-            addLink(newLink)
+            createdLinks.append(addLink(newLink))
+
+    return createdLinks
 
 def addOrUpdateLink(link):
     jsonLink = link.toJSON()
