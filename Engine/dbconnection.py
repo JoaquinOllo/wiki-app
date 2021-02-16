@@ -17,11 +17,6 @@ except:
     PASSWORD = dbsettings.PASSWORD
     connnectionString = dbsettings.connnectionString
 
-USERNAME = "readandwrite"
-PASSWORD = "5uORJJ9eootiprml"
-connnectionString = "mongodb+srv://{username}:{password}@clasenodejsmongodb.63fs3.mongodb.net/<dbname>?retryWrites=true&w=majority"
-
-
 userMap = {
     "username" : USERNAME,
     "password" : PASSWORD
