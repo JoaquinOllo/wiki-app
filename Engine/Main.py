@@ -4,20 +4,26 @@ from Engine import TextOperations
 from Engine.TextOperations import propertyExists
 from flask import abort, render_template, current_app
 
-def registerSimpleEntry (title, text):
+#Normalize: functions should return updated and created links
+
+def registerSimpleEntry (title: str, text: str):
+    #TODO rewrite and normalize
     newEntry = Link(title, text, [], "")
     saveLink(newEntry)
 
-def saveLink (link):
+def saveLink (link: object) -> list:
     return dbconnection.addLink(link)
 
-def existsLink(title):
+def existsLink(title: str) -> bool:
+    #TODO rewrite for query by id, check if needed
     return dbconnection.existsLink(title)
 
 def editLink (title, newLink):
+    #TODO rewrite for query by id, check if needed
     dbconnection.updateLink(title, newLink)
 
 def editLinkPartially (title, newLink):
+    #TODO rewrite for query by id, check if needed
     editionLink = getLink(title)
     formattedNewLink = Link()
     formattedNewLink.fromJSON(newLink)
@@ -33,7 +39,8 @@ def editLinkPartially (title, newLink):
 
     editLinkByID(editionLink.id, editionLink)
 
-def editLinkByID (id, newLink):
+def editLinkByID (id: str, newLink):
+    #TODO normalize
     if (isinstance(newLink, Link)):
         dbconnection.updateLinkById(id, newLink)
     else:
@@ -41,7 +48,8 @@ def editLinkByID (id, newLink):
         link.fromJSON(newLink)
         dbconnection.updateLinkById(id, link)
 
-def deleteLinkByField(field, value):
+def deleteLinkByField(field: str, value: str) -> list:
+    #TODO normalize (use returned value by dbconnection function)
     deletedLinks = []
     link = dbconnection.getLinkByField(field, value)
     if link:
@@ -57,37 +65,41 @@ def deleteLinkByField(field, value):
 
     return deletedLinks
 
-def deleteManyByField(field, value):
+def deleteManyByField(field: str, value: str):
+    #TODO normalize and check if needed
     links = dbconnection.getLinksByField(field, value)
     for link in links:
         dbconnection.deleteLinkById(link.id)
 
 def editSimpleEntry (title, newText):
+    #TODO normalize and check if needed
     entry = dbconnection.getLink(title)
     entry.operation = newText
     editLink(title, entry)
 
-def getLink (title):
+def getLink (title: str) -> object:
     entry = dbconnection.getLinksContainingWord("alias", title)
     if entry:
         return entry[0]
     else:
         return False
 
-def getLinkByID (id):
+def getLinkByID (id: str) -> object:
     entry = dbconnection.getLinkByField("_id", id)
     return entry    
 
-def addAliasToLink(title, newAlias):
+def addAliasToLink(title: str, newAlias: str):
+    #TODO normalize
     entry = getLink(title)
     entry.alias.append(newAlias)
     editLink(title, entry)
 
-def registerEmptyEntry(title):
+def registerEmptyEntry(title: str):
+    #TODO normalize and check if needed
     newEntry = Link(title)
     saveLink(newEntry)
 
-def registerSimpleLink(jsonInput):
+def registerSimpleLink(jsonInput: object) -> list:
     """
     Creates and saves a new link to the database, using a json as input. Validates that the json has the required format. The created link will either have just an alias (an empty link), or be complete (alias, plus operation and links). The function returns the created link.
 
@@ -111,18 +123,22 @@ def registerSimpleLink(jsonInput):
     else:
         raise TypeError("Inadequate json input format. JSON input must have a name attribute, at least.")
 
-def editLinkAtPosition(title, linkPos, newLink):
+def editLinkAtPosition(title: str, linkPos: int, newLink: str):
+    #TODO normalize and check if needed and rewrite to query by id
     link = getLink(title)
     link.links[linkPos] = newLink
     editLink(title, link)
 
-def registerTag (tag, text):
+def registerTag (tag: str, text: str):
+    #TODO normalize
     registerSimpleEntry(tag, text + ": ")
 
-def extendTag (tag, newLink):
+def extendTag (tag: str, newLink: str):
+    #TODO normalize and check if needed and rewrite to query by id
     extendTagByMany (tag, [newLink])
 
-def extendTagByMany (tag, newLinks):
+def extendTagByMany (tag: str, newLinks: list):
+    #TODO normalize and rewrite to query by id
     tagLink = getLink(tag)
 
     amountOfNewSlots = len(newLinks)
@@ -134,7 +150,8 @@ def extendTagByMany (tag, newLinks):
 
     editLink(tag, tagLink)
 
-def drawLinkBetween2 (title, operation, source, destination):
+def drawLinkBetween2 (title: str, operation: str, source: str, destination: str):
+    #TODO normalize and rewrite to query by id
 
     if TextOperations.hasEnoughSlots(operation, 2):
         links = [source, destination]
@@ -142,69 +159,81 @@ def drawLinkBetween2 (title, operation, source, destination):
         saveLink(link)
     
 
-def groupLinks (title, operation, titles):
+def groupLinks (title: str, operation: str, titles: list):
+    #TODO normalize and raise exception if conditions aren't fulfilled and rewrite to query by id
     if TextOperations.hasEnoughSlots(operation, len(titles)):
         link = Link(title, operation, titles)
         saveLink(link)
 
-def enumerateLinks (title, operationBeginning, titles):
+def enumerateLinks (title: str, operationBeginning: str, titles: list):
+    #TODO normalize and rewrite to query by id
     operation = TextOperations.generateOperation(operationBeginning, len(titles))
     link = Link (title, operation, titles)
     saveLink(link)
 
-def addLinkToEntry (title, wordToMakeLink):
+def addLinkToEntry (title: str, wordToMakeLink: str):
+    #TODO normalize and rewrite to query by id
     link = getLink(title)
     link.addLinkToOperation(wordToMakeLink)
     id = link.id
     editLinkByID(id, link)
 
-def addLinkToEntryByID (id, wordToMakeLink):
+def addLinkToEntryByID (id: str, wordToMakeLink: str):
+    #TODO normalize
     link = getLinkByID(id)
     link.addLinkToOperation(wordToMakeLink)
     id = link.id
     editLinkByID(id, link)
 
-def followLink (title, link):
+def followLink (title: str, link: str) -> object:
+    #TODO normalize and rewrite to query by id
     topLink = getLink(title)
     if link in topLink.links:
         return getLink(link)
 
 def severeLink (entity, link):
+    #TODO
     pass
 
-def seekByLink (link):
+def seekByLink (link: str) -> object:
+    #TODO check if needed
     return dbconnection.getLinkByLinks(link)
 
-def getManyByField(value, field):
+def getManyByField(value: str, field: str) -> list:
     if field == "id" or field == "_id":
         return dbconnection.getLinksByField("_id", value)
     else:
         return dbconnection.getLinksContainingWord(field, value)
 
-def seekManyByTitle (title):
+def seekManyByTitle (title: str) -> list:
+    #TODO check if needed
     return dbconnection.getLinksByField("alias", title)
 
-def seekManyByLink (linkText):
+def seekManyByLink (linkText: str) -> list:
+    #TODO check if needed
     return dbconnection.getLinksByField("links", linkText)
 
-def seekManyByOperation (operationSought):
+def seekManyByOperation (operationSought: str) -> list:
+    #TODO check if needed
     return dbconnection.getLinksByField("operation", operationSought)
 
-def seekManyByAliasAndLink (link):
+def seekManyByAliasAndLink (link: str) -> list:
     linksByAlias = dbconnection.getLinksByField("alias", link)
     linksByLink = dbconnection.getLinksByField("links", link)
     return linksByAlias + linksByLink
 
-def registerLink (title, operation, entitiesLinked = []):
+def registerLink (title: str, operation: str, entitiesLinked:list = []):
+    #TODO normalize and check if needed
     newLink = Link(title, operation, entitiesLinked)
     saveLink (newLink)
 
-def addDecoratedName(aliasSought, decoratedName):
+def addDecoratedName(aliasSought: str, decoratedName: str):
+    #TODO normalize
     link = getLink(aliasSought)
     link.name = decoratedName
     editLink(aliasSought, link)
 
-def getLinkAndChildren(linkAlias):
+def getLinkAndChildren(linkAlias: str) -> list:
     fatherLink = getLink(linkAlias)
 
     fatherAndChildren = []
@@ -217,15 +246,17 @@ def getLinkAndChildren(linkAlias):
 
     return fatherAndChildren
 
-def registerLinkFromFormattedText(title, text):
+def registerLinkFromUnformattedText(title: str, text: str):
+    #TODO normalize and check if needed
     newEntry = Link(title, text, [], "")
     newEntry.fromUnformattedText(text)
     saveLink(newEntry)
 
-def getUndevelopedEntries():
+def getUndevelopedEntries() -> list:
     return seekManyByOperation("")
 
-def mergeIdenticalLinks(title):
+def mergeIdenticalLinks(title: str):
+    #TODO normalize
     mainLink = getLink(title)
     contador = 0
     id = mainLink.id
@@ -243,7 +274,8 @@ def mergeIdenticalLinks(title):
     for id in linksIdToDelete:
         deleteLinkByField("_id", id)
 
-def collectMentionsForTag(tagTitle):
+def collectMentionsForTag(tagTitle: str):
+    #TODO normalize
     mentions = seekManyByLink(tagTitle)
     link = getLink(tagTitle)
     mentionsToAdd = []
@@ -264,16 +296,18 @@ def collectMentionsForTag(tagTitle):
 
         editLinkByID(link.id, link)
 
-def registerAnotatedLink(title, text):
-    anotatedText = TextOperations.AnotatedText(text)
-    reducedText = anotatedText.getReducedText()
-    sublinks = anotatedText.sublinks
+def registerAnnotatedLink(title: str, text: str):
+    #TODO normalize
+    annotatedText = TextOperations.annotatedText(text)
+    reducedText = annotatedText.getReducedText()
+    sublinks = annotatedText.sublinks
     for sublink in sublinks:
         registerLink(sublink.title, sublink.text, sublink.links)
 
-    registerLinkFromFormattedText(title, reducedText)
+    registerLinkFromUnformattedText(title, reducedText)
 
-def unifyLinks(centerTitle, titlesToDelete):
+def unifyLinks(centerTitle: str, titlesToDelete: list):
+    #TODO normalize and check if needed
     mainLink = getLink(centerTitle)
     id = mainLink.id
     links = []
@@ -294,13 +328,15 @@ def unifyLinks(centerTitle, titlesToDelete):
         deleteLinkByField("_id", id)
 
 def replaceOperationForLink(title, textToReplace, linkForSlot):
+    #TODO
     pass
 
-def getIndirectReferences(tagTitle):
+def getIndirectReferences(tagTitle: str) -> list:
     indirectMentions = dbconnection.getLinksContainingWord("operation", tagTitle)
     return indirectMentions
 
-def turnIndirectReferencesIntoTag(tagTitle):
+def turnIndirectReferencesIntoTag(tagTitle: str):
+    #TODO normalize
     indirectMentions = getIndirectReferences(tagTitle)
     tagReferences = []
 
@@ -312,7 +348,8 @@ def turnIndirectReferencesIntoTag(tagTitle):
     registerTag(tagTitle, "")
     extendTagByMany(tagTitle, tagReferences)
 
-def removeLinkFromEntity(id, wordToRemove):
+def removeLinkFromEntity(id: str, wordToRemove: str):
+    #TODO normalize
     link = getLinkByID(id)
     link.removeLink(wordToRemove)
     editLinkByID(id, link)
@@ -332,7 +369,7 @@ def removeLinkFromEntity(id, wordToRemove):
 ##addLinkToEntry("Ruiseñor escarlata", "pájaro")
 ##print (seekManyByTitle("hola"))
 ##print (seekManyByLink("paquita"))
-##registerLinkFromFormattedText("El castillo de Trento", "Construido por el <Duque Versillis>, posteriormente a la <Guerra de las Rosas>, sobre este castillo cayó una poderosa maldición por parte de <Tiresia>.")
+##registerLinkFromUnformattedText("El castillo de Trento", "Construido por el <Duque Versillis>, posteriormente a la <Guerra de las Rosas>, sobre este castillo cayó una poderosa maldición por parte de <Tiresia>.")
 ##print (seekByLink("paquita"))
 ##for link in getLinkAndChildren("articulo"):
 ##    print(link)
@@ -352,7 +389,7 @@ def removeLinkFromEntity(id, wordToRemove):
 #print(getLink("Mijail") + getLink("Sergei"))
 #collectMentionsForTag("PJ")
 #print(getLink("PJ"))
-#registerAnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
+#registerAnnotatedLink("Sesión 3", "Se encontró con [<<Aurigas>>, <teniente general> del <quinto ejército>.] Cenaron juntos en el <arcón gris>.")
 #registerEmptyEntry("PJs")
 #unifyLinks("PJ", ["PJs"])
 #turnIndirectReferencesIntoTag("trasfondo")
