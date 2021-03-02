@@ -1,11 +1,10 @@
 import pymongo
 import os
-#from Constants import dbsettings
 from bson.objectid import ObjectId
 from Engine.Link import Link
 from Engine.TextOperations import jsonify
 import re
-from flask import abort, render_template, current_app
+from flask import current_app
 
 try:
     USERNAME = os.environ['USERNAME']
@@ -117,6 +116,7 @@ def existsLink(title):
     return bool(docsCollection.find_one(query))
 
 def getLinksContainingWord(field, word):
+    current_app.logger.info("call to getLinksContainingWord")
     regularExpression = "^.*" + word + ".*$"
     regularExpression = re.compile(regularExpression, re.IGNORECASE)
     query = { field: { "$regex": regularExpression } }

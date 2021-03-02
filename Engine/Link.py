@@ -2,7 +2,7 @@ from Engine import TextOperations
 from bson.objectid import ObjectId
 import re
 from flask import Flask
-app = Flask(__name__)
+from flask import current_app
 
 class Link:
     def __init__(self, alias="", operation="", links=[], decoratedName=""):
@@ -59,6 +59,7 @@ class Link:
         return json
 
     def fromJSON(self, json):
+        current_app.logger.info("calling fromJSON method")
 
         if json != None:
             self.alias = json["alias"]

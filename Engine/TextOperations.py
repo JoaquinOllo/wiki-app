@@ -4,7 +4,7 @@ This script contains utility functions and classes to perform string operations 
 """
 
 import re
-
+from flask import current_app
 
 class LinkedText:
     """

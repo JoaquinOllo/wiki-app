@@ -19,7 +19,7 @@ app = create_app(enviroment)
 
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
 #Instructions to run flask server, on windows cmd
-#cd ".\GMWiki\Server"
+#cd ".\GMWiki\"
 #set FLASK_APP=main.py
 #set FLASK_ENV=development
 #python -m flask run

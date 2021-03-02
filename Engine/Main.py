@@ -2,7 +2,7 @@ from Engine.Link import Link
 from Engine import dbconnection
 from Engine import TextOperations
 from Engine.TextOperations import propertyExists
-from flask import abort, render_template, current_app
+from flask import current_app
 
 #Normalize: functions should return updated and created links
 
@@ -200,6 +200,7 @@ def seekByLink (link: str) -> object:
     return dbconnection.getLinkByLinks(link)
 
 def getManyByField(value: str, field: str) -> list:
+    current_app.logger.info("call to getManyByField")
     if field == "id" or field == "_id":
         return dbconnection.getLinksByField("_id", value)
     else:
