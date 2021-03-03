@@ -1,17 +1,20 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      Aplicación en fase de desarrollo para la gestión de información de campañas y ambientaciones.
-    </p>
+  <div>
+    {{ link }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'link-display',
   props: {
-    msg: String
+    link: Object
+  },
+  watch: {
+    link (newLink, oldLink) {
+      console.log(newLink)
+      console.log(oldLink)
+    }
   }
 }
 </script>
