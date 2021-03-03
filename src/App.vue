@@ -1,9 +1,12 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/new">Crear</router-link> |
+    <router-link to="/search">Buscar</router-link> |
+    <router-link to="/edit">Editar</router-link> |
+    <router-link to="/delete">Eliminar</router-link>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
