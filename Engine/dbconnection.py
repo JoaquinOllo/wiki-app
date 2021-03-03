@@ -5,6 +5,7 @@ from Engine.Link import Link
 from Engine.TextOperations import jsonify
 import re
 from flask import current_app
+from Models.user import User
 
 try:
     USERNAME = os.environ['USERNAME']
@@ -29,6 +30,7 @@ myclient = pymongo.MongoClient(connnectionString)
 mydb = myclient["linktity"]
 
 docsCollection = mydb["ScumAndVillainy"]
+usersCollection = mydb["users"]
 
 def addLink(link):
     jsonLink = link.toJSON()
@@ -131,6 +133,19 @@ def getLinksContainingWord(field, word):
 def deleteLinkById(id):
     query = {"_id": ObjectId(id)}
     docsCollection.delete_one(query)
+
+def authenticateUser(username: str, password: str) -> bool:
+    authenticated = False
+    query = {"username": username}
+    entity = usersCollection.find_one(query)
+
+    if (entity):
+        newUser = User(entity["username"], entity["password"], entity["admin"])
+
+        authenticated = newUser.verify_password(password)
+    
+    return authenticated
+
 
 ##link = Link (["Grumbarg"], "<0> es <1> del ejército de <2>", ["general", "Rahash"], "Grumbarg el grande", 1)
 ##addLink(link)

@@ -1,10 +1,11 @@
 from flask import Flask
 from Server import config
 import copy
-from flask import request, current_app
+from flask import request, current_app, make_response, jsonify
 from Constants import ResponseCodes
 from Engine import Main
 import sys
+from Engine import dbconnection
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -29,16 +30,32 @@ responseDefault = {
     "links": []
 }
 
+def authenticateUser(requestData: object) -> bool:
+    isUserValid = False
+
+    username = requestData.authorization['username']
+    password = requestData.authorization['password']
+    current_app.logger.info("user calling API: {0}".format(username))
+
+    isUserValid = dbconnection.authenticateUser(username, password)
+    current_app.logger.info("valid user: {0}".format(isUserValid))
+
+    return isUserValid
+
 @app.route('/links/<field>/<value>', methods=['GET'])
 def links(field, value):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
         current_app.logger.info("call to GET links")
-        #seek many links
-        response["operationSuccess"] = ResponseCodes.SUCCESS
-        for link in Main.getManyByField(value, field):
-            response['links'].append(link.toJSON())
-        return (response, [("Access-Control-Allow-Origin", "*")])
+        if (authenticateUser(request)):
+            #seek many links
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            for link in Main.getManyByField(value, field):
+                response['links'].append(link.toJSON())
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
+            return responseObj
 
 @app.route('/link/<id>', methods=['GET', 'DELETE', 'PATCH'])
 def link(id):
@@ -77,10 +94,6 @@ def newLink():
             response["description"] = ResponseCodes.UNKNOWNERROR
         return (response, [("Access-Control-Allow-Origin", "*")])
 
-@app.route('/hello')
-def hello():
-    current_app.logger.info("call to hello")
-    return 'Hello, World'
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
