@@ -6,6 +6,7 @@ from Engine.TextOperations import jsonify
 import re
 from flask import current_app
 from Models.user import User
+from Util import exceptions
 
 try:
     USERNAME = os.environ['USERNAME']
@@ -135,17 +136,87 @@ def deleteLinkById(id):
     docsCollection.delete_one(query)
 
 def authenticateUser(username: str, password: str) -> bool:
+    """Returns a bool value indicating whether the provided username and password match to a user registered, or not.
+    Parameters
+    ----------
+    name : username
+        The user login
+    name : password
+        The password set for that user
+    """ 
     authenticated = False
     query = {"username": username}
     entity = usersCollection.find_one(query)
 
     if (entity):
-        newUser = User(entity["username"], entity["password"], entity["admin"])
+        newUser = User(entity["username"], entity["password"], entity["admin"], True)
 
         authenticated = newUser.verify_password(password)
     
     return authenticated
 
+def userExists(username: str) -> bool:
+    """Returns a bool value indicating whether the provided username is already registered
+    Parameters
+    ----------
+    name : username
+        The username to validate
+    """
+    userExists = False
+
+    query = {"username": username}
+    entity = usersCollection.find_one(query)
+
+    if(entity):
+        userExists = True
+
+    return userExists 
+
+def registerUser(username: str, password: str):
+    """Registers a new user, if the username isn't yet taken
+
+    Parameters
+    ----------
+    name : username
+        The user login
+    name : password
+        The password set for that user
+
+    Raises
+    ----------
+    ExistingUserException
+        If an already existing username is passed as the first argument.
+    """
+    if (userExists(username)):
+        raise exceptions.ExistingUserException("{0} already exists in the database".format(username))
+    else:
+        newUser = User(username, password)
+        jsonUser = newUser.toJSON()
+
+        usersCollection.insert_one(jsonUser)
+
+def registerAdmin(username: str, password: str):
+    """Registers a new admin, if the username isn't yet taken
+
+    Parameters
+    ----------
+    name : username
+        The user login
+    name : password
+        The password set for that user
+
+    Raises
+    ----------
+    ExistingUserException
+        If an already existing username is passed as the first argument.
+    """
+    if (userExists(username)):
+        raise exceptions.ExistingUserException("{0} already exists in the database".format(username))
+    else:
+        newUser = User(username, password, True)
+        jsonUser = newUser.toJSON()
+
+        usersCollection.insert_one(jsonUser)
 
 ##link = Link (["Grumbarg"], "<0> es <1> del ejército de <2>", ["general", "Rahash"], "Grumbarg el grande", 1)
 ##addLink(link)
@@ -165,3 +236,5 @@ def authenticateUser(username: str, password: str) -> bool:
 # print (link.id)
 # link.alias.append("Mikhail")
 # updateLinkById(link.id, link)
+#print (userExists("joaquinollo"))
+#registerUser("joaco", "esdla03")
