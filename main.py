@@ -6,6 +6,7 @@ from Constants import ResponseCodes
 from Engine import Main
 import sys
 from Engine import dbconnection
+from flask_cors import CORS
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -16,6 +17,7 @@ enviroment = config.config['development']
 
 
 app = create_app(enviroment)
+CORS(app)
 
 
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
