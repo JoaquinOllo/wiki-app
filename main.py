@@ -59,7 +59,10 @@ def links(field, value):
                 return responseObj
         except TypeError:
             responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
-            return responseObj  
+            return responseObj
+        except:
+            responseObj = make_response((jsonify(response), 500, [("Access-Control-Allow-Origin", "*")]))
+            return responseObj            
 
 @app.route('/link/<id>', methods=['GET', 'DELETE', 'PATCH'])
 def link(id):
