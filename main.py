@@ -47,15 +47,19 @@ def links(field, value):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
         current_app.logger.info("call to GET links")
-        if (authenticateUser(request)):
-            #seek many links
-            response["operationSuccess"] = ResponseCodes.SUCCESS
-            for link in Main.getManyByField(value, field):
-                response['links'].append(link.toJSON())
-            return (response, [("Access-Control-Allow-Origin", "*")])
-        else:
+        try:
+            if (authenticateUser(request)):
+                #seek many links
+                response["operationSuccess"] = ResponseCodes.SUCCESS
+                for link in Main.getManyByField(value, field):
+                    response['links'].append(link.toJSON())
+                return (response, [("Access-Control-Allow-Origin", "*")])
+            else:
+                responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
+                return responseObj
+        except TypeError:
             responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
-            return responseObj
+            return responseObj  
 
 @app.route('/link/<id>', methods=['GET', 'DELETE', 'PATCH'])
 def link(id):
