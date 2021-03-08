@@ -11,12 +11,12 @@ from Util import exceptions
 try:
     USERNAME = os.environ['USERNAME']
     PASSWORD = os.environ['PASSWORD']
-    connnectionString = os.environ['connnectionString']
+    connectionString = os.environ['connectionString']
 except:
     from Constants import dbsettings
     USERNAME = dbsettings.USERNAME
     PASSWORD = dbsettings.PASSWORD
-    connnectionString = dbsettings.connnectionString
+    connectionString = dbsettings.connectionString
 
 userMap = {
     "username" : USERNAME,
@@ -24,8 +24,8 @@ userMap = {
 }
 
 #myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-connnectionString = connnectionString.format_map(userMap)
-myclient = pymongo.MongoClient(connnectionString)
+connectionString = connectionString.format_map(userMap)
+myclient = pymongo.MongoClient(connectionString)
 
 
 mydb = myclient["linktity"]

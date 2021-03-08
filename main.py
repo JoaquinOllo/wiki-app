@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from Server import config
 import copy
 from flask import request, current_app, make_response, jsonify
@@ -7,6 +7,7 @@ from Engine import Main
 import sys
 from Engine import dbconnection
 from flask_cors import CORS
+from flask_session import Session
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -18,6 +19,7 @@ enviroment = config.config['development']
 
 app = create_app(enviroment)
 CORS(app)
+Session(app)
 
 
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
@@ -35,11 +37,19 @@ responseDefault = {
 def authenticateUser(requestData: object) -> bool:
     isUserValid = False
 
-    username = requestData.authorization['username']
-    password = requestData.authorization['password']
-    current_app.logger.info("user calling API: {0}".format(username))
+    try:
+        username = requestData.authorization['username']
+        password = requestData.authorization['password']
+        current_app.logger.info("user calling API: {0}".format(username))
 
-    isUserValid = dbconnection.authenticateUser(username, password)
+        isUserValid = dbconnection.authenticateUser(username, password)
+
+    except TypeError:
+        sessionCookie = request.cookies.get('username', "no conectado")
+        sessionUsername = session.get("username", "no conectado")
+        if (sessionCookie != "no conectado" and sessionCookie == sessionUsername):
+            isUserValid = True
+
     current_app.logger.info("valid user: {0}".format(isUserValid))
 
     return isUserValid
@@ -102,6 +112,21 @@ def newLink():
         except:
             response["description"] = ResponseCodes.UNKNOWNERROR
         return (response, [("Access-Control-Allow-Origin", "*")])
+
+@app.route('/login')
+def login():
+    response = copy.deepcopy(responseDefault)
+    if authenticateUser(request):
+        username = request.authorization['username']
+        Flask.open_session(Flask, request)            
+        response["operationSuccess"] = ResponseCodes.SUCCESS
+        session["username"] = username
+        resp = make_response(jsonify(response), [("Access-Control-Allow-Origin", "*")])
+        resp.set_cookie('username', username)
+    else:
+        resp = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
+
+    return resp
 
 
 if __name__ == '__main__':
