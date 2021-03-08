@@ -128,6 +128,14 @@ def login():
 
     return resp
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    response = copy.deepcopy(responseDefault)
+    response["operationSuccess"] = ResponseCodes.SUCCESS
+    resp = make_response(jsonify(response), [("Access-Control-Allow-Origin", "*")])
+
+    return resp
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
