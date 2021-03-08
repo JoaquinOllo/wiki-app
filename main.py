@@ -43,8 +43,10 @@ def authenticateUser(requestData: object) -> bool:
         current_app.logger.info("user calling API: {0}".format(username))
 
         isUserValid = dbconnection.authenticateUser(username, password)
+        current_app.logger.info("authentication through headers")
 
     except TypeError:
+        current_app.logger.info("authentication through cookies")
         sessionCookie = request.cookies.get('username', "no conectado")
         sessionUsername = session.get("username", "no conectado")
         if (sessionCookie != "no conectado" and sessionCookie == sessionUsername):
@@ -54,64 +56,73 @@ def authenticateUser(requestData: object) -> bool:
 
     return isUserValid
 
+def invalidAuthResponse(responseData: object) -> object:
+    responseObj = make_response((jsonify(responseData), 401, [("Access-Control-Allow-Origin", "*")]))
+    return responseObj
+
 @app.route('/links/<field>/<value>', methods=['GET'])
 def links(field, value):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
         current_app.logger.info("call to GET links")
-        try:
-            if (authenticateUser(request)):
-                #seek many links
-                response["operationSuccess"] = ResponseCodes.SUCCESS
-                for link in Main.getManyByField(value, field):
-                    response['links'].append(link.toJSON())
-                return (response, [("Access-Control-Allow-Origin", "*")])
-            else:
-                responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
-                return responseObj
-        except TypeError:
-            responseObj = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
-            return responseObj
-        except:
-            responseObj = make_response((jsonify(response), 500, [("Access-Control-Allow-Origin", "*")]))
-            return responseObj            
+        if (authenticateUser(request)):
+            #seek many links
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            for link in Main.getManyByField(value, field):
+                response['links'].append(link.toJSON())
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            return invalidAuthResponse(response)
+          
 
 @app.route('/link/<id>', methods=['GET', 'DELETE', 'PATCH'])
 def link(id):
     response = copy.deepcopy(responseDefault)
     if request.method == "GET":
-        #seek a link
-        response["operationSuccess"] = ResponseCodes.SUCCESS
-        link = Main.getLinkByID(id)
-        response['links'].append(link.toJSON())
-        return (response, [("Access-Control-Allow-Origin", "*")])
+        if (authenticateUser(request)):
+            #seek a link
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            link = Main.getLinkByID(id)
+            response['links'].append(link.toJSON())
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            return invalidAuthResponse(response)
     elif request.method == "DELETE":
-        deletedLinks = Main.deleteLinkByField("_id", id)
-        response['links'] = deletedLinks
-        response["operationSuccess"] = ResponseCodes.SUCCESS
-        return (response, [("Access-Control-Allow-Origin", "*")])
+        if (authenticateUser(request)):
+            deletedLinks = Main.deleteLinkByField("_id", id)
+            response['links'] = deletedLinks
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            return invalidAuthResponse(response)
     elif request.method == "PATCH":
-        jsonData = request.get_json()
-        Main.editLinkByID(id, jsonData)
-        response["operationSuccess"] = ResponseCodes.SUCCESS
-        link = Main.getLinkByID(id)
-        response['links'].append(link.toJSON())
-        return (response, [("Access-Control-Allow-Origin", "*")])
+        if (authenticateUser(request)):
+            jsonData = request.get_json()
+            Main.editLinkByID(id, jsonData)
+            response["operationSuccess"] = ResponseCodes.SUCCESS
+            link = Main.getLinkByID(id)
+            response['links'].append(link.toJSON())
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            return invalidAuthResponse(response)
 
 @app.route('/link', methods=['PUT'])
 def newLink():
     response = copy.deepcopy(responseDefault)
     if request.method == "PUT":
-        jsonData = request.get_json()
-        try:
-            createdLinks = Main.registerSimpleLink(jsonData)
-            response["operationSuccess"] = ResponseCodes.SUCCESS
-            response["links"] = createdLinks
-        except TypeError:
-            response["description"] = ResponseCodes.FORMATINPUTERROR
-        except:
-            response["description"] = ResponseCodes.UNKNOWNERROR
-        return (response, [("Access-Control-Allow-Origin", "*")])
+        if (authenticateUser(request)):
+            jsonData = request.get_json()
+            try:
+                createdLinks = Main.registerSimpleLink(jsonData)
+                response["operationSuccess"] = ResponseCodes.SUCCESS
+                response["links"] = createdLinks
+            except TypeError:
+                response["description"] = ResponseCodes.FORMATINPUTERROR
+            except:
+                response["description"] = ResponseCodes.UNKNOWNERROR
+            return (response, [("Access-Control-Allow-Origin", "*")])
+        else:
+            return invalidAuthResponse(response)
 
 @app.route('/login')
 def login():
