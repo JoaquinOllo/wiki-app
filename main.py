@@ -35,6 +35,12 @@ responseDefault = {
 }
 
 def authenticateUser(requestData: object) -> bool:
+    """Authenticates user credentials, either by checking authorization headers, or by checking the session cookie.
+    Parameters
+    ----------
+    name : requestData
+        The request object for this call to the API
+    """
     isUserValid = False
 
     try:
@@ -57,6 +63,12 @@ def authenticateUser(requestData: object) -> bool:
     return isUserValid
 
 def invalidAuthResponse(responseData: object) -> object:
+    """Creates and returns an invalid credentials response, by calling the make_response() Flask method, and returns it.<
+    Parameters
+    ----------
+    name : requestData
+        The request object for this call to the API
+    """
     responseObj = make_response((jsonify(responseData), 401, [("Access-Control-Allow-Origin", "*")]))
     return responseObj
 
