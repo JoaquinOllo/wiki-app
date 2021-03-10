@@ -10,9 +10,7 @@ from flask_cors import CORS, cross_origin
 from flask_session import Session
 
 def create_app(enviroment):
-    app = Flask(__name__,
-                static_folder = "./dist/static",
-                template_folder = "./dist")
+    app = Flask(__name__)
     app.config.from_object(enviroment)
     return app
 
@@ -162,11 +160,6 @@ def logout():
     resp = make_response(jsonify(response), [("Access-Control-Allow-Origin", "*")])
 
     return resp
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def dender_vue(path):
-    return render_template("index.html")
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
