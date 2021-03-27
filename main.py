@@ -18,7 +18,7 @@ enviroment = config.config['development']
 
 
 app = create_app(enviroment)
-CORS(app,  supports_credentials=True)
+CORS(app,  supports_credentials=True, resources={r"*": {"origins": ["http://localhost:8080", "http://localhost:5000", "https://campaign-wiki-app.herokuapp.com"]}})
 Session(app)
 
 
@@ -137,7 +137,7 @@ def newLink():
             return invalidAuthResponse(response)
 
 @app.route('/login')
-@cross_origin(origins=["http://localhost:8080/"])
+#@cross_origin(origins=["http://localhost:8080", "http://localhost:5000", "https://campaign-wiki-app.herokuapp.com"])
 def login():
     response = copy.deepcopy(responseDefault)
     if authenticateUser(request):
@@ -148,7 +148,7 @@ def login():
         resp = make_response(jsonify(response))
         resp.set_cookie('username', username)
     else:
-        resp = make_response((jsonify(response), 401, [("Access-Control-Allow-Origin", "*")]))
+        resp = make_response((jsonify(response), 401))
 
     return resp
 
@@ -160,6 +160,18 @@ def logout():
     resp = make_response(jsonify(response), [("Access-Control-Allow-Origin", "*")])
 
     return resp
+
+# @app.after_request # blueprint can also be app~~
+# def after_request(response):
+#     header = response.headers
+#     header["Access-Control-Allow-Credentials"] = True
+#     header['Access-Control-Allow-Origin'] = ["http://localhost:8080", "http://localhost:5000", "https://campaign-wiki-app.herokuapp.com"]
+#     return response
+
+#@app.route('/', defaults={'path': ''})
+#@app.route('/<path:path>')
+#def dender_vue(path):
+#    return render_template("index.html")
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support

@@ -88,14 +88,6 @@ class User:
 
         return newJSON
 
-    def validate(self) -> bool:
-        #TODO complete
-        """validates the user name and password
-        """
-        isUserValid = False
-
-        return isUserValid
-
     def __str__(self):
         return "Username: {0}".format(self.username)
 
